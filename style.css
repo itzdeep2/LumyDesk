@@ -31,3 +31,49 @@ cursor: pointer;
 .page { display: none; }
 .page.active { display: block; }
 h2 { margin-bottom: 16px; }
+/* ---------- colours (pastel) ---------- */
+:root {
+--bg: #fdf6f0;
+--card: #ffffff;
+--text: #4a4458;
+--accent: #f7c6d9;
+--accent-dark: #e89ab8;
+--soft: #e8dff5;
+}
+
+body { background: var(--bg); color: var(--text); }
+.sidebar { background: var(--soft); }
+.logo span { color: var(--accent-dark); }
+
+.nav-btn { background: transparent; color: var(--text); transition: 0.2s; }
+.nav-btn:hover { background: var(--card); }
+.nav-btn.active { background: var(--accent); font-weight: 600; }
+
+.page {
+background: var(--card);
+border-radius: 20px;
+padding: 28px;
+box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* buttons and inputs used everywhere */
+button.btn {
+background: var(--accent-dark);
+color: white;
+border: none;
+padding: 10px 18px;
+border-radius: 12px;
+cursor: pointer;
+font-size: 15px;
+}
+button.btn:hover { opacity: 0.85; }
+
+input, select, textarea {
+padding: 10px 12px;
+border: 2px solid var(--soft);
+border-radius: 12px;
+font-family: inherit;
+font-size: 15px;
+background: var(--card);
+color: var(--text);
+}
