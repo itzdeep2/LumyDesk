@@ -97,3 +97,21 @@ color: var(--text);
 cursor: pointer;
 }
 .mode-btn.active { background: var(--accent); font-weight: 600; }
+
+/* ---------- to-do ---------- */
+.add-row { display: flex; gap: 10px; margin-bottom: 16px; }
+.add-row input { flex: 1; }
+#todoList { list-style: none; }
+#todoList li {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 12px;
+background: var(--bg);
+border-radius: 12px;
+margin-bottom: 8px;
+}
+#todoList li span { flex: 1; }
+#todoList li.done span { text-decoration: line-through; opacity: 0.5; }
+.del-btn { background: none; border: none; cursor: pointer; font-size: 16px; }
+input[type="checkbox"] { width: 18px; height: 18px; padding: 0; accent-color: var(--accent-dark); }

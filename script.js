@@ -70,3 +70,54 @@ document.getElementById("resetBtn").addEventListener("click", function () {
 setMode(currentMode);
 });
 showTime();
+
+// ---------- to-do list ----------
+let todos = [];   // each todo looks like { text: "...", done: false }
+
+const todoInput = document.getElementById("todoInput");
+const todoList = document.getElementById("todoList");
+
+function showTodos() {
+todoList.innerHTML = "";   // clear the list, then draw it again
+
+todos.forEach(function (todo, index) {
+const li = document.createElement("li");
+if (todo.done) li.classList.add("done");
+
+li.innerHTML = `
+<input type="checkbox" ${todo.done ? "checked" : ""}>
+<span></span>
+<button class="del-btn">����</button>
+`;
+li.querySelector("span").textContent = todo.text;   // textContent is safer than innerHTML
+
+// tick / untick
+li.querySelector("input").addEventListener("change", function () {
+todo.done = !todo.done;
+showTodos();
+});
+
+// delete
+li.querySelector(".del-btn").addEventListener("click", function () {
+todos.splice(index, 1);
+showTodos();
+});
+
+todoList.appendChild(li);
+});
+}
+
+function addTodo() {
+const text = todoInput.value.trim();
+if (text === "") return;   // don't add empty tasks
+todos.push({ text: text, done: false });
+todoInput.value = "";
+showTodos();
+}
+
+document.getElementById("todoAddBtn").addEventListener("click", addTodo);
+// enter key also adds the task
+todoInput.addEventListener("keydown", function (e) {
+if (e.key === "Enter") addTodo();
+});
+showTodos();
