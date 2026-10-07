@@ -86,3 +86,14 @@ margin-bottom: 20px;
 color: var(--accent-dark);
 }
 .timer-buttons { display: flex; gap: 10px; justify-content: center; }
+
+.mode-buttons { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+.mode-btn {
+padding: 8px 16px;
+border: none;
+border-radius: 20px;
+background: var(--soft);
+color: var(--text);
+cursor: pointer;
+}
+.mode-btn.active { background: var(--accent); font-weight: 600; }

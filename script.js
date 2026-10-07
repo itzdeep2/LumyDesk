@@ -15,28 +15,27 @@ document.getElementById(btn.dataset.page).classList.add("active");
 });
 
 // ---------- pomodoro timer ----------
-let timeLeft = 25 * 60;   // in seconds
-let timerId = null;       // stores the setInterval so we can stop it
+const modes = { focus: 25, short: 5, long: 15 };   // minutes
+let currentMode = "focus";
+let timeLeft = modes[currentMode] * 60;            // in seconds
+let timerId = null;
 
 const timerDisplay = document.getElementById("timerDisplay");
 
 function showTime() {
 let min = Math.floor(timeLeft / 60);
 let sec = timeLeft % 60;
-// padStart adds the 0 in front (5 becomes 05)
-timerDisplay.textContent = String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+let text = String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+timerDisplay.textContent = text;
+document.title = text + " - LumyDesk";   // time also shows in the browser tab
 }
 
 function startTimer() {
-if (timerId !== null) return;   // already running, do nothing
+if (timerId !== null) return;   // already running
 timerId = setInterval(function () {
 timeLeft--;
 showTime();
-if (timeLeft <= 0) {
-clearInterval(timerId);
-timerId = null;
-alert("Time is up! Take a break ����");
-}
+if (timeLeft <= 0) timerFinished();
 }, 1000);
 }
 
@@ -45,14 +44,29 @@ clearInterval(timerId);
 timerId = null;
 }
 
-function resetTimer() {
+// runs when the countdown reaches zero
+function timerFinished() {
 pauseTimer();
-timeLeft = 25 * 60;
-showTime();
+alert("Time is up! ����");
 }
 
+// change between focus / short break / long break
+function setMode(mode) {
+pauseTimer();
+currentMode = mode;
+timeLeft = modes[mode] * 60;
+showTime();
+document.querySelectorAll(".mode-btn").forEach(function (b) {
+b.classList.toggle("active", b.dataset.mode === mode);
+});
+}
+
+document.querySelectorAll(".mode-btn").forEach(function (b) {
+b.addEventListener("click", function () { setMode(b.dataset.mode); });
+});
 document.getElementById("startBtn").addEventListener("click", startTimer);
 document.getElementById("pauseBtn").addEventListener("click", pauseTimer);
-document.getElementById("resetBtn").addEventListener("click", resetTimer);
-
+document.getElementById("resetBtn").addEventListener("click", function () {
+setMode(currentMode);
+});
 showTime();
