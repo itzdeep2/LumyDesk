@@ -77,3 +77,12 @@ font-size: 15px;
 background: var(--card);
 color: var(--text);
 }
+/* ---------- timer ---------- */
+.timer-box { text-align: center; padding: 20px; }
+#timerDisplay {
+font-size: 80px;
+font-weight: 700;
+margin-bottom: 20px;
+color: var(--accent-dark);
+}
+.timer-buttons { display: flex; gap: 10px; justify-content: center; }
