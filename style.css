@@ -1,0 +1,33 @@
+/* reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: 'Segoe UI', sans-serif;
+display: flex;
+min-height: 100vh;
+}
+
+/* left menu */
+.sidebar {
+width: 220px;
+padding: 24px 16px;
+display: flex;
+flex-direction: column;
+gap: 24px;
+}
+.logo { font-size: 26px; }
+nav { display: flex; flex-direction: column; gap: 8px; }
+.nav-btn {
+padding: 12px 14px;
+border: none;
+border-radius: 12px;
+text-align: left;
+font-size: 15px;
+cursor: pointer;
+}
+
+/* main area */
+.content { flex: 1; padding: 32px; }
+.page { display: none; }
+.page.active { display: block; }
+h2 { margin-bottom: 16px; }
