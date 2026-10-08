@@ -169,12 +169,15 @@ openNote(note.id);
 
 // saves automatically while typing
 function updateNote() {
-const note = notes.find(n => n.id === currentNoteId);
-if (!note) return;
-note.title = noteTitle.value;
-note.body = noteBody.value;
-save("notes", notes);
-showNotes();
+  const note = notes.find(n => n.id === currentNoteId);
+  if (!note) return;
+  note.title = noteTitle.value;
+  note.body = noteBody.value;
+  save("notes", notes);
+
+  // update only the sidebar label so input focus isn't lost on every keystroke
+  const activeLi = noteList.querySelector(".active");
+  if (activeLi) activeLi.textContent = note.title || "Untitled";
 }
 
 function deleteNote() {
@@ -211,7 +214,7 @@ box.className = "subject-box";
 box.innerHTML = `
 <div class="subject-head">
 <strong></strong>
-<button class="del-btn">🗑️</button>
+<button class="del-btn">🗑</button>
 </div>
 <div class="chapter-list"></div>
 <div class="add-row small">
@@ -223,9 +226,18 @@ box.querySelector("strong").textContent = sub.name;
 
 // delete the whole subject
 box.querySelector(".del-btn").addEventListener("click", function () {
+const removedChapterIds = new Set(sub.chapters.map(c => c.id));
 subjects = subjects.filter(s => s.id !== sub.id);
 save("subjects", subjects);
+
+// clean deleted chapters out of the weekly plan
+for (const date in plan) {
+  plan[date] = plan[date].filter(id => !removedChapterIds.has(id));
+}
+save("plan", plan);
+
 showSubjects();
+showWeek();
 });
 
 // draw all the chapters of this subject
@@ -247,7 +259,15 @@ chip.addEventListener("dblclick", function () {
 if (confirm("Delete chapter " + ch.name + "?")) {
 sub.chapters = sub.chapters.filter(c => c.id !== ch.id);
 save("subjects", subjects);
+
+// clean deleted chapter out of the weekly plan
+for (const date in plan) {
+  plan[date] = plan[date].filter(id => id !== ch.id);
+}
+save("plan", plan);
+
 showSubjects();
+showWeek();
 }
 });
 
@@ -386,3 +406,4 @@ document.getElementById("nextWeek").addEventListener("click", function () {
 weekStart.setDate(weekStart.getDate() + 7);
 showWeek();
 });
+showWeek();
