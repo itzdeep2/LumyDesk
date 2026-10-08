@@ -1,3 +1,11 @@
+// small helpers so I don't repeat localStorage code again and again
+function load(key, fallback) {
+const saved = localStorage.getItem(key);
+return saved ? JSON.parse(saved) : fallback;
+}
+function save(key, value) {
+localStorage.setItem(key, JSON.stringify(value));
+}
 // ---------- menu / page switching ----------
 const navButtons = document.querySelectorAll(".nav-btn");
 const pages = document.querySelectorAll(".page");
@@ -72,12 +80,13 @@ setMode(currentMode);
 showTime();
 
 // ---------- to-do list ----------
-let todos = [];   // each todo looks like { text: "...", done: false }
+let todos = load("todos", []);   // each todo looks like { text: "...", done: false }
 
 const todoInput = document.getElementById("todoInput");
 const todoList = document.getElementById("todoList");
 
 function showTodos() {
+  save("todos", todos);   // save every time the list changes
 todoList.innerHTML = "";   // clear the list, then draw it again
 
 todos.forEach(function (todo, index) {
