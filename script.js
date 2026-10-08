@@ -234,6 +234,12 @@ sub.chapters.forEach(function (ch) {
 const chip = document.createElement("div");
 chip.className = "chapter-chip";
 chip.textContent = ch.name;
+
+// make the chapter draggable
+chip.draggable = true;
+chip.addEventListener("dragstart", function (e) {
+e.dataTransfer.setData("text/plain", ch.id);
+});
 chip.style.background = sub.color;
 
 // double click on a chapter to delete it
@@ -287,3 +293,96 @@ if (e.key === "Enter") addSubject();
 
 
 showSubjects();
+
+// ---------- weekly planner (drag and drop) ----------
+let plan = load("plan", {});   // like { "2026-10-07": [chapterId, chapterId] }
+let weekStart = getMonday(new Date());
+const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+// gives the monday of the week of any date
+function getMonday(date) {
+const d = new Date(date);
+const day = (d.getDay() + 6) % 7;   // monday = 0
+d.setDate(d.getDate() - day);
+d.setHours(0, 0, 0, 0);
+return d;
+}
+
+// date -> "2026-10-07" (this is the key we save with)
+function dateKey(date) {
+const y = date.getFullYear();
+const m = String(date.getMonth() + 1).padStart(2, "0");
+const d = String(date.getDate()).padStart(2, "0");
+return  y + "-" + m + "-" + d;
+}
+
+// find a chapter (and its subject) using the chapter id
+function findChapter(id) {
+for (const sub of subjects) {
+for (const ch of sub.chapters) {
+if (ch.id === id) return { chapter: ch, subject: sub };
+}
+}
+return null;
+}
+
+function showWeek() {
+const board = document.getElementById("weekBoard");
+board.innerHTML = "";
+
+for (let i = 0; i < 7; i++) {
+const day = new Date(weekStart);
+day.setDate(weekStart.getDate() + i);
+const key = dateKey(day);
+
+const col = document.createElement("div");
+col.className = "day-col";
+col.innerHTML = "<h4>" + dayNames[i] + " <small>" + day.getDate() + "/" + (day.getMonth() + 1) + "</small></h4>";
+
+// cards already planned for this day
+(plan[key] || []).forEach(function (chId) {
+const found = findChapter(chId);
+if (!found) return;   // chapter was deleted, skip it
+const card = document.createElement("div");
+card.className = "plan-card";
+card.style.background = found.subject.color;
+card.textContent = found.subject.name + " - " + found.chapter.name;
+col.appendChild(card);
+});
+
+// drag and drop events
+col.addEventListener("dragover", function (e) {
+e.preventDefault();   // without this the drop will not work
+col.classList.add("drag-over");
+});
+col.addEventListener("dragleave", function () {
+col.classList.remove("drag-over");
+});
+col.addEventListener("drop", function (e) {
+e.preventDefault();
+col.classList.remove("drag-over");
+const chId = Number(e.dataTransfer.getData("text/plain"));
+if (!plan[key]) plan[key] = [];
+if (!plan[key].includes(chId)) plan[key].push(chId);   // no duplicates
+save("plan", plan);
+showWeek();
+});
+
+board.appendChild(col);
+}
+
+// label on top, like "Oct 05 2026 - Oct 11 2026"
+const end = new Date(weekStart);
+end.setDate(end.getDate() + 6);
+document.getElementById("weekLabel").textContent =
+weekStart.toDateString().slice(4) + " - " + end.toDateString().slice(4);
+}
+
+document.getElementById("prevWeek").addEventListener("click", function () {
+weekStart.setDate(weekStart.getDate() - 7);
+showWeek();
+});
+document.getElementById("nextWeek").addEventListener("click", function () {
+weekStart.setDate(weekStart.getDate() + 7);
+showWeek();
+});

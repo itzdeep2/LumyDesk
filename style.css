@@ -140,3 +140,13 @@ cursor: pointer;
 .add-row.small { margin-bottom: 0; }
 .add-row.small input { min-width: 0; padding: 6px 10px; }
 .add-row.small .btn { padding: 6px 12px; }
+/* ---------- weekly planner ---------- */
+.week-panel { flex: 1; }
+.week-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+#weekBoard { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.day-col { background: var(--bg); border-radius: 14px; padding: 10px; min-height: 160px; }
+.day-col h4 { font-size: 14px; margin-bottom: 8px; }
+.day-col small { opacity: 0.6; font-weight: normal; }
+.day-col.drag-over { outline: 2px dashed var(--accent-dark); }
+.plan-card { padding: 8px; border-radius: 10px; font-size: 13px; margin-bottom: 6px; }
+.chapter-chip[draggable="true"] { cursor: grab; }
