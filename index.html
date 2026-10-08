@@ -61,7 +61,17 @@
 </section>
 <section class="page" id="planner">
 <h2>Study Planner</h2>
-<p>Planner coming soon...</p>
+<div class="planner-layout">
+<!-- left side: subjects and their chapters -->
+<div class="subject-panel">
+<div class="add-row">
+<input type="text" id="subjectInput" placeholder="Add subject (eg. Physics)">
+<button class="btn" id="subjectAddBtn">+</button>
+</div>
+<p class="hint">Drag a chapter to a day. Double click a chapter to delete it.</p>
+<div id="subjectList"></div>
+</div>
+</div>
 </section>
 <section class="page" id="calendar">
 <h2>Calendar</h2>

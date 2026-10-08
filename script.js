@@ -193,3 +193,97 @@ noteBody.addEventListener("input", updateNote);
 
 showNotes();
 if (notes.length > 0) openNote(notes[0].id);   // open the latest note
+
+// ---------- subjects & chapters ----------
+// each subject: { id, name, color, chapters: [ { id, name, done } ] }
+let subjects = load("subjects", []);
+const pastelColors = ["#f7c6d9", "#c9e4de", "#c6def1", "#dbcdf0", "#faedcb", "#f2c6b4"];
+
+const subjectInput = document.getElementById("subjectInput");
+const subjectList = document.getElementById("subjectList");
+
+function showSubjects() {
+subjectList.innerHTML = "";
+
+subjects.forEach(function (sub) {
+const box = document.createElement("div");
+box.className = "subject-box";
+box.innerHTML = `
+<div class="subject-head">
+<strong></strong>
+<button class="del-btn">����</button>
+</div>
+<div class="chapter-list"></div>
+<div class="add-row small">
+<input type="text" placeholder="Add chapter">
+<button class="btn">+</button>
+</div>
+`;
+box.querySelector("strong").textContent = sub.name;
+
+// delete the whole subject
+box.querySelector(".del-btn").addEventListener("click", function () {
+subjects = subjects.filter(s => s.id !== sub.id);
+save("subjects", subjects);
+showSubjects();
+});
+
+// draw all the chapters of this subject
+const chapterList = box.querySelector(".chapter-list");
+sub.chapters.forEach(function (ch) {
+const chip = document.createElement("div");
+chip.className = "chapter-chip";
+chip.textContent = ch.name;
+chip.style.background = sub.color;
+
+// double click on a chapter to delete it
+chip.addEventListener("dblclick", function () {
+if (confirm("Delete chapter " + ch.name + "?")) {
+sub.chapters = sub.chapters.filter(c => c.id !== ch.id);
+save("subjects", subjects);
+showSubjects();
+}
+});
+
+chapterList.appendChild(chip);
+});
+
+// add a new chapter
+const chInput = box.querySelector("input");
+const addChapter = function () {
+const name = chInput.value.trim();
+if (name === "") return;
+sub.chapters.push({ id: Date.now(), name: name, done: false });
+save("subjects", subjects);
+showSubjects();
+};
+box.querySelector(".btn").addEventListener("click", addChapter);
+chInput.addEventListener("keydown", function (e) {
+if (e.key === "Enter") addChapter();
+});
+
+subjectList.appendChild(box);
+});
+}
+
+function addSubject() {
+const name = subjectInput.value.trim();
+if (name === "") return;
+subjects.push({
+id: Date.now(),
+name: name,
+color: pastelColors[subjects.length % pastelColors.length],   // each subject gets its own colour
+chapters: []
+});
+subjectInput.value = "";
+save("subjects", subjects);
+showSubjects();
+}
+
+document.getElementById("subjectAddBtn").addEventListener("click", addSubject);
+subjectInput.addEventListener("keydown", function (e) {
+if (e.key === "Enter") addSubject();
+});
+
+
+showSubjects();
