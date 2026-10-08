@@ -130,3 +130,66 @@ todoInput.addEventListener("keydown", function (e) {
 if (e.key === "Enter") addTodo();
 });
 showTodos();
+
+// ---------- notes ----------
+let notes = load("notes", []);   // each note: { id, title, body }
+let currentNoteId = null;
+
+const noteList = document.getElementById("noteList");
+const noteTitle = document.getElementById("noteTitle");
+const noteBody = document.getElementById("noteBody");
+
+function showNotes() {
+noteList.innerHTML = "";
+notes.forEach(function (note) {
+const li = document.createElement("li");
+li.textContent = note.title || "Untitled";
+if (note.id === currentNoteId) li.classList.add("active");
+li.addEventListener("click", function () {
+openNote(note.id);
+});
+noteList.appendChild(li);
+});
+}
+
+function openNote(id) {
+currentNoteId = id;
+const note = notes.find(n => n.id === id);
+noteTitle.value = note ? note.title : "";
+noteBody.value = note ? note.body : "";
+showNotes();
+}
+
+function newNote() {
+const note = { id: Date.now(), title: "", body: "" };
+notes.unshift(note);   // new note goes on top
+save("notes", notes);
+openNote(note.id);
+}
+
+// saves automatically while typing
+function updateNote() {
+const note = notes.find(n => n.id === currentNoteId);
+if (!note) return;
+note.title = noteTitle.value;
+note.body = noteBody.value;
+save("notes", notes);
+showNotes();
+}
+
+function deleteNote() {
+notes = notes.filter(n => n.id !== currentNoteId);
+save("notes", notes);
+currentNoteId = null;
+noteTitle.value = "";
+noteBody.value = "";
+showNotes();
+}
+
+document.getElementById("newNoteBtn").addEventListener("click", newNote);
+document.getElementById("deleteNoteBtn").addEventListener("click", deleteNote);
+noteTitle.addEventListener("input", updateNote);
+noteBody.addEventListener("input", updateNote);
+
+showNotes();
+if (notes.length > 0) openNote(notes[0].id);   // open the latest note
