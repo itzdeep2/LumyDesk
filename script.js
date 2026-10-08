@@ -55,7 +55,7 @@ timerId = null;
 // runs when the countdown reaches zero
 function timerFinished() {
 pauseTimer();
-alert("Time is up! ����");
+alert("Time is up! ⏰");
 }
 
 // change between focus / short break / long break
@@ -96,7 +96,7 @@ if (todo.done) li.classList.add("done");
 li.innerHTML = `
 <input type="checkbox" ${todo.done ? "checked" : ""}>
 <span></span>
-<button class="del-btn">����</button>
+<button class="del-btn">🗑</button>
 `;
 li.querySelector("span").textContent = todo.text;   // textContent is safer than innerHTML
 
@@ -211,7 +211,7 @@ box.className = "subject-box";
 box.innerHTML = `
 <div class="subject-head">
 <strong></strong>
-<button class="del-btn">����</button>
+<button class="del-btn">🗑️</button>
 </div>
 <div class="chapter-list"></div>
 <div class="add-row small">
