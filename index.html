@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>LumyDesk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -73,24 +75,23 @@
 <section class="page" id="planner">
 <h2>Study Planner</h2>
 <div class="planner-layout">
-<!-- left side: subjects and their chapters -->
-<div class="subject-panel">
-<!-- right side: the week board -->
-<div class="week-panel">
-<div class="week-nav">
-<button class="btn" id="prevWeek">◀</button>
-<strong id="weekLabel"></strong>
-<button class="btn" id="nextWeek">▶</button>
-</div>
-<div id="weekBoard"></div>
-</div>
-<div class="add-row">
-<input type="text" id="subjectInput" placeholder="Add subject (eg. Physics)">
-<button class="btn" id="subjectAddBtn">+</button>
-</div>
-<p class="hint">Drag a chapter to a day. Double click a chapter to delete it.</p>
-<div id="subjectList"></div>
-</div>
+  <div class="subject-panel">
+    <div class="add-row">
+      <input type="text" id="subjectInput" placeholder="Add subject (eg. Physics)">
+      <button class="btn" id="subjectAddBtn">+</button>
+    </div>
+    <p class="hint">Drag a chapter to a day. Double click a chapter to delete it.</p>
+    <div id="subjectList"></div>
+  </div>
+
+  <div class="week-panel">
+    <div class="week-nav">
+      <button class="btn" id="prevWeek">◀</button>
+      <strong id="weekLabel"></strong>
+      <button class="btn" id="nextWeek">▶</button>
+    </div>
+    <div id="weekBoard"></div>
+  </div>
 </div>
 </section>
 <section class="page" id="calendar">

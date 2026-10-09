@@ -208,3 +208,32 @@ body, .sidebar, .page, .nav-btn { transition: background 0.4s, color 0.4s; }
 
 .theme-box { margin-top: auto; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
 .theme-box select { width: 100%; }
+
+/* ---------- final polish ---------- */
+body { font-family: 'Poppins', 'Segoe UI', sans-serif; }
+
+/* pages fade in */
+.page.active { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(8px); }
+to { opacity: 1; transform: none; }
+}
+
+/* little hover effects */
+.stat-card, .subject-box { transition: transform 0.2s, box-shadow 0.2s; }
+.stat-card:hover, .subject-box:hover {
+transform: translateY(-3px);
+box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+button.btn:active { transform: scale(0.96); }
+
+/* phone / small screens */
+@media (max-width: 800px) {
+body { flex-direction: column; }
+.sidebar { width: 100%; padding: 12px; gap: 12px; }
+nav { flex-direction: row; flex-wrap: wrap; }
+.content { padding: 12px; }
+.planner-layout, .notes-layout { flex-direction: column; }
+.subject-panel, .notes-side { width: 100%; }
+#timerDisplay { font-size: 56px; }
+}
