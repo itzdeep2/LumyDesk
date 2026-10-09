@@ -431,3 +431,44 @@ plan[key] = plan[key].filter(id => id !== chId);
 save("plan", plan);
 showWeek();
 });
+
+// ---------- progress ----------
+// how much of a subject is done (0 to 100)
+function subjectPercent(sub) {
+if (sub.chapters.length === 0) return 0;
+const done = sub.chapters.filter(c => c.done).length;
+return Math.round((done / sub.chapters.length) * 100);
+}
+
+function showProgress() {
+let totalChapters = 0;
+let doneChapters = 0;
+
+const bars = document.getElementById("progressBars");
+bars.innerHTML = "";
+
+subjects.forEach(function (sub) {
+totalChapters += sub.chapters.length;
+doneChapters += sub.chapters.filter(c => c.done).length;
+
+const percent = subjectPercent(sub);
+const row = document.createElement("div");
+row.className = "bar-row";
+row.innerHTML = `
+<span class="bar-name"></span>
+<div class="bar-track"><div class="bar-fill"></div></div>
+<span>${percent}%</span>
+`;
+row.querySelector(".bar-name").textContent = sub.name;
+row.querySelector(".bar-fill").style.width = percent + "%";
+row.querySelector(".bar-fill").style.background = sub.color;
+bars.appendChild(row);
+});
+
+const overall = totalChapters === 0 ? 0 : Math.round((doneChapters / totalChapters) * 100);
+document.getElementById("statChapters").textContent = doneChapters + "/" + totalChapters;
+document.getElementById("statPercent").textContent = overall + "%";
+document.getElementById("statTasks").textContent = todos.filter(t => t.done).length;
+}
+
+showProgress();

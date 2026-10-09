@@ -155,3 +155,12 @@ cursor: pointer;
 .plan-card { display: flex; align-items: center; gap: 6px; }
 .plan-card span { flex: 1; }
 .plan-card.done span, .chapter-chip.done { text-decoration: line-through; opacity: 0.6; }
+
+/* ---------- progress ---------- */
+.stat-row { display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat-card { flex: 1; min-width: 140px; background: var(--bg); border-radius: 16px; padding: 16px; text-align: center; }
+.stat-card h3 { font-size: 28px; color: var(--accent-dark); }
+.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-name { width: 110px; }
+.bar-track { flex: 1; height: 14px; background: var(--bg); border-radius: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 10px; transition: width 0.5s; }
