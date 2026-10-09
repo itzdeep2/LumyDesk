@@ -164,3 +164,13 @@ cursor: pointer;
 .bar-name { width: 110px; }
 .bar-track { flex: 1; height: 14px; background: var(--bg); border-radius: 10px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 10px; transition: width 0.5s; }
+
+.chart-box { position: relative; height: 300px; margin-top: 24px; }
+
+/* ---------- calendar ---------- */
+.cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+#calendarGrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.cal-dayname { text-align: center; font-weight: 600; font-size: 13px; opacity: 0.7; }
+.cal-cell { min-height: 70px; background: var(--bg); border-radius: 10px; padding: 6px; font-size: 13px; cursor: pointer; }
+.cal-cell.empty { background: transparent; cursor: default; }
+.cal-cell.today { outline: 2px solid var(--accent-dark); }

@@ -498,3 +498,56 @@ plugins: { legend: { display: false } }
 }
 
 drawSubjectChart();
+
+// ---------- calendar ----------
+let calDate = new Date();   // the month we are showing
+const monthNames = ["January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December"];
+
+function showCalendar() {
+const grid = document.getElementById("calendarGrid");
+grid.innerHTML = "";
+
+const year = calDate.getFullYear();
+const month = calDate.getMonth();
+document.getElementById("monthLabel").textContent = monthNames[month] + " " + year;
+
+// day names on top
+dayNames.forEach(function (name) {
+const h = document.createElement("div");
+h.className = "cal-dayname";
+h.textContent = name;
+grid.appendChild(h);
+});
+
+// empty boxes before the 1st of the month
+const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
+for (let i = 0; i < firstDay; i++) {
+const empty = document.createElement("div");
+empty.className = "cal-cell empty";
+grid.appendChild(empty);
+}
+
+const daysInMonth = new Date(year, month + 1, 0).getDate();
+const todayKey = dateKey(new Date());
+
+for (let d = 1; d <= daysInMonth; d++) {
+const key = dateKey(new Date(year, month, d));
+const cell = document.createElement("div");
+cell.className = "cal-cell";
+if (key === todayKey) cell.classList.add("today");
+cell.innerHTML = "<strong>" + d + "</strong>";
+grid.appendChild(cell);
+}
+}
+
+document.getElementById("prevMonth").addEventListener("click", function () {
+calDate = new Date(calDate.getFullYear(), calDate.getMonth() - 1, 1);
+showCalendar();
+});
+document.getElementById("nextMonth").addEventListener("click", function () {
+calDate = new Date(calDate.getFullYear(), calDate.getMonth() + 1, 1);
+showCalendar();
+});
+
+showCalendar();
