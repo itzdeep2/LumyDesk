@@ -589,5 +589,5 @@ document.getElementById("nextMonth").addEventListener("click", function () {
 calDate = new Date(calDate.getFullYear(), calDate.getMonth() + 1, 1);
 showCalendar();
 });
-
+}
 showCalendar();
