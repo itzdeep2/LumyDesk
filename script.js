@@ -654,10 +654,37 @@ Chart.defaults.borderColor = "rgba(150, 150, 150, 0.2)";
 showProgress();
 showFocusChart();
 }
+// picks a theme by itself (used when "Auto" is selected)
+function autoThemeName() {
+// on a break the theme becomes mint so it feels relaxing
+if (currentMode !== "focus") return "mint";
 
+const hour = new Date().getHours();
+if (hour >= 5 && hour < 12) return "peach";       // morning
+if (hour >= 12 && hour < 17) return "sky";        // afternoon
+if (hour >= 17 && hour < 21) return "lavender";   // evening
+return "night";                                    // late night
+}
+
+function applyTheme(choice) {
+save("theme", choice);
+const name = choice === "auto" ? autoThemeName() : choice;
+document.documentElement.setAttribute("data-theme", name);
+
+// charts don't use css, so give them the new colours and redraw
+Chart.defaults.color = cssVar("--text");
+Chart.defaults.borderColor = "rgba(150, 150, 150, 0.2)";
+showProgress();
+showFocusChart();
+}
+
+// check again every 10 minutes so the theme follows the time of day
+setInterval(function () {
+if (themeSelect.value === "auto") applyTheme("auto");
+}, 10 * 60 * 1000);
 themeSelect.addEventListener("change", function () {
 applyTheme(themeSelect.value);
 });
 
-themeSelect.value = load("theme", "peach");
+themeSelect.value = load("theme", "auto");
 applyTheme(themeSelect.value);
