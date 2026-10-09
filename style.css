@@ -174,3 +174,16 @@ cursor: pointer;
 .cal-cell { min-height: 70px; background: var(--bg); border-radius: 10px; padding: 6px; font-size: 13px; cursor: pointer; }
 .cal-cell.empty { background: transparent; cursor: default; }
 .cal-cell.today { outline: 2px solid var(--accent-dark); }
+
+.cal-cell.selected { background: var(--accent); }
+.cal-dot {
+font-size: 10px;
+border-radius: 6px;
+padding: 1px 4px;
+margin-top: 3px;
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+}
+#dayDetails { margin-top: 16px; }
+#dayDetails p { margin: 6px 0; }

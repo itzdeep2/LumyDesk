@@ -536,10 +536,50 @@ const key = dateKey(new Date(year, month, d));
 const cell = document.createElement("div");
 cell.className = "cal-cell";
 if (key === todayKey) cell.classList.add("today");
+if (key === selectedDay) cell.classList.add("selected");
 cell.innerHTML = "<strong>" + d + "</strong>";
+
+// small coloured tags for chapters planned on this date
+(plan[key] || []).forEach(function (chId) {
+const found = findChapter(chId);
+if (!found) return;
+const dot = document.createElement("div");
+dot.className = "cal-dot";
+dot.style.background = found.subject.color;
+dot.textContent = found.subject.name;
+cell.appendChild(dot);
+});
+
+// click a date to see what is planned
+cell.addEventListener("click", function () {
+selectedDay = key;
+showCalendar();
+showDayDetails();
+});
+
 grid.appendChild(cell);
 }
+
+let selectedDay = dateKey(new Date());   // the date user clicked (today at first)
+
+function showDayDetails() {
+const box = document.getElementById("dayDetails");
+const items = (plan[selectedDay] || []).map(findChapter).filter(Boolean);
+
+box.innerHTML = "<h3>" + selectedDay + "</h3>";
+if (items.length === 0) {
+box.innerHTML += "<p class='hint'>Nothing planned for this day.</p>";
+return;
 }
+items.forEach(function (item) {
+const p = document.createElement("p");
+p.textContent = (item.chapter.done ? "��� " : "��� ") + item.subject.name + " - " + item.chapter.name;
+box.appendChild(p);
+});
+}
+
+showCalendar();
+showDayDetails();
 
 document.getElementById("prevMonth").addEventListener("click", function () {
 calDate = new Date(calDate.getFullYear(), calDate.getMonth() - 1, 1);
