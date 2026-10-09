@@ -150,3 +150,8 @@ cursor: pointer;
 .day-col.drag-over { outline: 2px dashed var(--accent-dark); }
 .plan-card { padding: 8px; border-radius: 10px; font-size: 13px; margin-bottom: 6px; }
 .chapter-chip[draggable="true"] { cursor: grab; }
+
+/* completed chapters */
+.plan-card { display: flex; align-items: center; gap: 6px; }
+.plan-card span { flex: 1; }
+.plan-card.done span, .chapter-chip.done { text-decoration: line-through; opacity: 0.6; }

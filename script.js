@@ -253,6 +253,7 @@ chip.addEventListener("dragstart", function (e) {
 e.dataTransfer.setData("text/plain", ch.id);
 });
 chip.style.background = sub.color;
+if (ch.done) chip.classList.add("done");
 
 // double click on a chapter to delete it
 chip.addEventListener("dblclick", function () {
@@ -406,4 +407,27 @@ document.getElementById("nextWeek").addEventListener("click", function () {
 weekStart.setDate(weekStart.getDate() + 7);
 showWeek();
 });
+card.textContent = found.subject.name + " - " + found.chapter.name;
+
+card.innerHTML = `
+<input type="checkbox" ${found.chapter.done ? "checked" : ""}>
+<span></span>
+<button class="del-btn">���</button>
+`;
+card.querySelector("span").textContent = found.subject.name + " - " + found.chapter.name;
+if (found.chapter.done) card.classList.add("done");
+
+// tick = chapter completed
+card.querySelector("input").addEventListener("change", function () {
+found.chapter.done = !found.chapter.done;
+save("subjects", subjects);
 showWeek();
+showSubjects();   // so the chapter list updates too
+});
+
+// remove the card from this day
+card.querySelector(".del-btn").addEventListener("click", function () {
+plan[key] = plan[key].filter(id => id !== chId);
+save("plan", plan);
+showWeek();
+});
