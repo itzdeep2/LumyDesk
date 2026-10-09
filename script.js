@@ -55,7 +55,55 @@ timerId = null;
 // runs when the countdown reaches zero
 function timerFinished() {
 pauseTimer();
-alert("Time is up! ⏰");
+
+// only focus sessions count as study time
+if (currentMode === "focus") {
+const today = dateKey(new Date());
+focusLog[today] = (focusLog[today] || 0) + modes.focus;
+save("focusLog", focusLog);
+showFocusChart();
+}
+alert("Time is up! ����");
+}
+
+let focusLog = load("focusLog", {});   // minutes studied per day, like { "2026-10-07": 50 }
+let focusChart = null;
+
+// reads a css variable (like --accent) so charts match the theme
+function cssVar(name) {
+return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function showFocusChart() {
+const labels = [];
+const data = [];
+
+// last 7 days, oldest first
+for (let i = 6; i >= 0; i--) {
+const d = new Date();
+d.setDate(d.getDate() - i);
+labels.push(dayNames[(d.getDay() + 6) % 7]);
+data.push(focusLog[dateKey(d)] || 0);
+}
+
+document.getElementById("statFocus").textContent = focusLog[dateKey(new Date())] || 0;
+
+if (focusChart) focusChart.destroy();
+focusChart = new Chart(document.getElementById("focusChart"), {
+type: "line",
+data: {
+labels: labels,
+datasets: [{
+label: "Focus minutes",
+data: data,
+borderColor: cssVar("--accent-dark"),
+backgroundColor: cssVar("--accent") + "88",
+fill: true,
+tension: 0.4
+}]
+},
+options: { maintainAspectRatio: false, plugins: { legend: { display: false } } }
+});
 }
 
 // change between focus / short break / long break
@@ -591,3 +639,4 @@ showCalendar();
 });
 }
 showCalendar();
+showFocusChart();
