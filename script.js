@@ -472,3 +472,29 @@ document.getElementById("statTasks").textContent = todos.filter(t => t.done).len
 }
 
 showProgress();
+
+let subjectChart = null;   // keep the chart so we can delete and redraw it
+
+function drawSubjectChart() {
+if (subjectChart) subjectChart.destroy();   // old chart must be removed first
+
+subjectChart = new Chart(document.getElementById("subjectChart"), {
+type: "bar",
+data: {
+labels: subjects.map(s => s.name),
+datasets: [{
+label: "% completed",
+data: subjects.map(s => subjectPercent(s)),
+backgroundColor: subjects.map(s => s.color),
+borderRadius: 10
+}]
+},
+options: {
+maintainAspectRatio: false,
+scales: { y: { beginAtZero: true, max: 100 } },
+plugins: { legend: { display: false } }
+}
+});
+}
+
+drawSubjectChart();
