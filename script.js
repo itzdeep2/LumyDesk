@@ -640,3 +640,24 @@ showCalendar();
 }
 showCalendar();
 showFocusChart();
+
+// ---------- themes ----------
+const themeSelect = document.getElementById("themeSelect");
+
+function applyTheme(name) {
+document.documentElement.setAttribute("data-theme", name);
+save("theme", name);
+
+// charts don't use css, so give them the new colours and redraw
+Chart.defaults.color = cssVar("--text");
+Chart.defaults.borderColor = "rgba(150, 150, 150, 0.2)";
+showProgress();
+showFocusChart();
+}
+
+themeSelect.addEventListener("change", function () {
+applyTheme(themeSelect.value);
+});
+
+themeSelect.value = load("theme", "peach");
+applyTheme(themeSelect.value);

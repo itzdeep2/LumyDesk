@@ -188,3 +188,23 @@ text-overflow: ellipsis;
 #dayDetails { margin-top: 16px; }
 #dayDetails p { margin: 6px 0; }
 .chart-title { margin-top: 28px; }
+/* ---------- themes ---------- */
+[data-theme="mint"] {
+--bg: #f1faf5; --text: #3f524a; --accent: #bfe8d4; --accent-dark: #6fbf9c; --soft: #dcf0e6;
+}
+[data-theme="lavender"] {
+--bg: #f6f2fc; --text: #4b4561; --accent: #d9c9f3; --accent-dark: #a68bd9; --soft: #e9e0f7;
+}
+[data-theme="sky"] {
+--bg: #f0f7fd; --text: #3d4f61; --accent: #bcdcf5; --accent-dark: #6aa9d8; --soft: #dcebf8;
+}
+[data-theme="night"] {
+--bg: #2b2a3a; --card: #383752; --text: #ece9f7; --accent: #6c5fa8; --accent-dark: #b9a8f0; --soft: #34334a;
+}
+[data-theme="night"] button.btn { color: #2b2a3a; }
+
+/* smooth colour change */
+body, .sidebar, .page, .nav-btn { transition: background 0.4s, color 0.4s; }
+
+.theme-box { margin-top: auto; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.theme-box select { width: 100%; }
