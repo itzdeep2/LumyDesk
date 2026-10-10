@@ -1,28 +1,41 @@
-# LumyDesk 🌸
+# LumyDesk
 
-hii!! this is LumyDesk, a pastel study website i made to make studying a bit less boring lol
+A low-stress, pastel dashboard built because opening six bloated productivity tabs every time I sat down to study was genuinely ruining my focus.
 
-it has a pomodoro timer, to-do list, notes, a study planner and progress tracking — basically a small place to manage my study stuff without opening 10 different apps 😭
+---
 
-## 🎨 Themes
+## Why I Built This
 
-there are different themes like Peach, Mint, Lavender, Sky and Night. you can pick one yourself or use Auto mode to change the theme based on the time of day.
+Most productivity suites feel either like sterile corporate spreadsheets or over-engineered Notion dashboards with a 20-second load time. I wanted something super clean, lightweight, and actually pleasant to look at while grinding through study sessions.
 
-## ✨ What it does
+Instead of switching between a timer app, a notepad, and a task list, LumyDesk bundles the core essentials into one single page. No accounts, no paywalls, no clutter.
 
-- ⏱️ **Pomodoro timer** — focus sessions + breaks, with finished sessions counted as study time.
-- ✅ **To-do list** — add tasks, complete them and delete them. tasks stay saved in your browser.
-- 📝 **Notes** — write notes and they save automatically.
-- 🗓️ **Study planner** — add subjects and chapters, then drag chapters onto days.
-- 📅 **Calendar** — check your plans for different dates.
-- 📊 **Progress** — see completed chapters, tasks and focus time.
+---
 
-## 🛠️ Made with
+## What It Actually Does
 
-HTML, CSS and JavaScript. no big frameworks, just the basics!
+* **Smart Pomodoro Cycle:** Tracks focus sprints and break intervals without getting in the way, automatically tallying finished sessions so you see actual study output.
+* **Persistent Tasks & Notes:** Add, check off, or dump quick study notes on the fly. Everything syncs directly to your browser's local storage so closing the tab won't nuke your work.
+* **Drag-and-Drop Study Planner:** Break down subjects by chapters and map them onto your study week with an interactive calendar view.
+* **Progress Snapshot:** Visual breakdown of your completed chapters, finished tasks, and total focus hours so you don't feel like you worked for nothing.
+* **Adaptive Theme Engine:** Clean pastel colorways (Peach, Mint, Lavender, Sky, Night) with an automatic mode that dynamically shifts color palettes based on your local time.
 
-## 🚀 How to run
+---
 
-download or clone the repo and open `index.html` in your browser. you can also use Live Server in VS Code.
+## Under the Hood
 
-made by Dhritideep 💗
+Built entirely from scratch with vanilla web tech—no heavy frameworks or bloat:
+
+* **HTML5:** Semantic layout structuring the dashboard widgets.
+* **Modern CSS:** CSS custom properties (variables) to drive dynamic theme swapping smoothly, alongside Flexbox and Grid for responsive placement.
+* **Vanilla JavaScript:** Powers the timer logic, dynamic DOM updates, drag-and-drop event handlers, and browser `localStorage` state management.
+
+---
+
+## Getting Started
+
+No `npm install` or setup headaches required.
+
+1. Clone or download the repository:
+   ```bash
+   git clone [https://github.com/itzdeep2/LumyDesk.git](https://github.com/itzdeep2/LumyDesk.git)
