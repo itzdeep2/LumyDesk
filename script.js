@@ -1,8 +1,3 @@
-/**
- * LumyDesk Core Engine
- * Local-first, delta-calculated interval timer, synced tasks, and direct buffer.
- */
-
 (function () {
   'use strict';
 
@@ -212,7 +207,7 @@
 
   saveAndRenderTasks();
 
-  // --- Scratchpad Component (Auto-Debounced) ---
+  // --- Scratchpad Component ---
   const scratchpad = document.getElementById('scratchpad');
   const saveIndicator = document.getElementById('saveIndicator');
   let saveTimeout = null;
@@ -230,13 +225,11 @@
 
   // --- Global Keyboard Shortcuts ---
   window.addEventListener('keydown', (e) => {
-    // Escape: defocus input fields
     if (e.key === 'Escape') {
       if (document.activeElement) document.activeElement.blur();
       return;
     }
 
-    // Don't intercept typing in inputs
     const isTyping = ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName);
 
     if (e.code === 'Space' && !isTyping) {

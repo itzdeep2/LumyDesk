@@ -1,107 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>LumyDesk // Session Dashboard</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LumyDesk // Session Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body data-theme="dark">
-<div class="layout">
-<!-- Top Bar -->
-<header class="topbar">
-<div class="brand">
-<span class="brand-glyph">&#9632;</span>
-<span class="brand-name">LumyDesk</span>
-<span class="brand-ver">v2.0-mono</span>
-</div>
+  <div class="layout">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-glyph">&#9632;</span>
+        <span class="brand-name">LumyDesk</span>
+        <span class="brand-ver">v2.0</span>
+      </div>
 
-<div class="topbar-meta">
-<div id="liveClock" class="clock-display">00:00:00</div>
-<div class="theme-select">
-<button type="button" class="btn-theme active" data-set-theme="dark">Dark</button>
-<button type="button" class="btn-theme" data-set-theme="paper">Paper</button>
-<button type="button" class="btn-theme" data-set-theme="amber">Amber</button>
-</div>
-</div>
-</header>
+      <div class="topbar-meta">
+        <div id="liveClock" class="clock-display">00:00:00</div>
+        <div class="theme-select">
+          <button type="button" class="btn-theme active" data-set-theme="dark">Dark</button>
+          <button type="button" class="btn-theme" data-set-theme="paper">Paper</button>
+          <button type="button" class="btn-theme" data-set-theme="amber">Amber</button>
+        </div>
+      </div>
+    </header>
 
-<!-- Main Grid -->
-<main class="grid">
-<!-- Section: Focus Engine -->
-<section class="panel timer-panel">
-<div class="panel-header">
-<h2>01 / Focus Timer</h2>
-<span class="status-indicator" id="timerStatus">READY</span>
-</div>
-<div class="panel-body timer-body">
-<div class="timer-digits" id="timerDigits">25:00</div>
+    <!-- Main Grid -->
+    <main class="grid">
+      <!-- Section: Focus Engine -->
+      <section class="panel timer-panel">
+        <div class="panel-header">
+          <h2>01 / Focus Timer</h2>
+          <span class="status-indicator" id="timerStatus">READY</span>
+        </div>
+        <div class="panel-body timer-body">
+          <div class="timer-digits" id="timerDigits">25:00</div>
 
-<div class="timer-modes">
-<button class="mode-btn active" data-minutes="25">Deep (25m)</button>
-<button class="mode-btn" data-minutes="50">Sprint (50m)</button>
-<button class="mode-btn" data-minutes="5">Break (5m)</button>
-<button class="mode-btn" data-minutes="15">Rest (15m)</button>
-</div>
+          <div class="timer-modes">
+            <button class="mode-btn active" data-minutes="25">Deep (25m)</button>
+            <button class="mode-btn" data-minutes="50">Sprint (50m)</button>
+            <button class="mode-btn" data-minutes="5">Break (5m)</button>
+            <button class="mode-btn" data-minutes="15">Rest (15m)</button>
+          </div>
 
-<div class="timer-controls">
-<button id="timerToggle" class="btn btn-primary">Start [Space]</button>
-<button id="timerReset" class="btn">Reset</button>
-</div>
+          <div class="timer-controls">
+            <button id="timerToggle" class="btn btn-primary">Start [Space]</button>
+            <button id="timerReset" class="btn">Reset</button>
+          </div>
 
-<div class="timer-stats">
-<span>Completed blocks today: <strong id="completedSessions">0</strong></span>
-</div>
-</div>
-</section>
+          <div class="timer-stats">
+            <span>Completed blocks today: <strong id="completedSessions">0</strong></span>
+          </div>
+        </div>
+      </section>
 
-<!-- Section: Task Stream -->
-<section class="panel tasks-panel">
-<div class="panel-header">
-<h2>02 / Work Queue</h2>
-<span class="count-badge" id="taskCount">0 remaining</span>
-</div>
-<div class="panel-body">
-<form id="taskForm" class="input-row">
-<input 
-type="text" 
-id="taskInput" 
-placeholder="Add next actionable item... (Press Enter)" 
-autocomplete="off" 
-required 
-/>
-<button type="submit" class="btn btn-primary">Add</button>
-</form>
+      <!-- Section: Task Stream -->
+      <section class="panel tasks-panel">
+        <div class="panel-header">
+          <h2>02 / Work Queue</h2>
+          <span class="count-badge" id="taskCount">0 remaining</span>
+        </div>
+        <div class="panel-body">
+          <form id="taskForm" class="input-row">
+            <input 
+              type="text" 
+              id="taskInput" 
+              placeholder="Add next actionable item... (Press Enter)" 
+              autocomplete="off" 
+              required 
+            />
+            <button type="submit" class="btn btn-primary">Add</button>
+          </form>
 
-<ul id="taskList" class="item-list"></ul>
-</div>
-</section>
+          <ul id="taskList" class="item-list"></ul>
+        </div>
+      </section>
 
-<!-- Section: Scratchpad -->
-<section class="panel notes-panel">
-<div class="panel-header">
-<h2>03 / Scratchpad</h2>
-<span class="save-status" id="saveIndicator">Saved</span>
-</div>
-<div class="panel-body">
-<textarea 
-id="scratchpad" 
-placeholder="// Persistent local buffer. Captures quick notes, dump memory, or write drafts..."
-spellcheck="false"
-></textarea>
-</div>
-</section>
-</main>
+      <!-- Section: Scratchpad -->
+      <section class="panel notes-panel">
+        <div class="panel-header">
+          <h2>03 / Scratchpad</h2>
+          <span class="save-status" id="saveIndicator">Saved</span>
+        </div>
+        <div class="panel-body">
+          <textarea 
+            id="scratchpad" 
+            placeholder="// Persistent local buffer. Captures quick notes, dump memory, or write drafts..."
+            spellcheck="false"
+          ></textarea>
+        </div>
+      </section>
+    </main>
 
-<!-- Keyboard Shortcut Bar -->
-<footer class="statusbar">
-<div class="status-item"><kbd>Space</kbd> Toggle Timer</div>
-<div class="status-item"><kbd>Ctrl</kbd> + <kbd>N</kbd> Focus Tasks</div>
-<div class="status-item"><kbd>Esc</kbd> Clear Input</div>
-<div class="status-item right">Local-First &bull; Zero Remote State</div>
-</footer>
-</div>
+    <!-- Keyboard Shortcut Bar -->
+    <footer class="statusbar">
+      <div class="status-item"><kbd>Space</kbd> Toggle Timer</div>
+      <div class="status-item"><kbd>Ctrl</kbd> + <kbd>N</kbd> Focus Tasks</div>
+      <div class="status-item"><kbd>Esc</kbd> Clear Input</div>
+      <div class="status-item right">Local-First &bull; Zero Remote State</div>
+    </footer>
+  </div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
