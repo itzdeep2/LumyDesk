@@ -1,7 +1,5 @@
 :root {
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Segoe UI Mono", Menlo, Consolas, monospace;
-  
-  /* Dark Charcoal Slate */
   --bg-app: #121316;
   --bg-panel: #18191d;
   --bg-inset: #0e0f11;
@@ -27,17 +25,30 @@
   --danger: #a83232;
 }
 
-[data-theme="amber"] {
-  --bg-app: #0f0b05;
-  --bg-panel: #19140a;
-  --bg-inset: #080602;
-  --border-color: #3d3014;
-  --border-focus: #8f722a;
-  --text-main: #ffb833;
-  --text-muted: #996e1f;
-  --accent: #ff9900;
-  --accent-contrast: #000000;
-  --danger: #ff4444;
+[data-theme="lavender"] {
+  --bg-app: #f5f3fa;
+  --bg-panel: #ffffff;
+  --bg-inset: #f8f7fb;
+  --border-color: #e5e1f1;
+  --border-focus: #b19cd9;
+  --text-main: #4a445d;
+  --text-muted: #8c85a6;
+  --accent: #b19cd9;
+  --accent-contrast: #ffffff;
+  --danger: #ff8b94;
+}
+
+[data-theme="mint"] {
+  --bg-app: #f2fbf7;
+  --bg-panel: #ffffff;
+  --bg-inset: #f7fdfa;
+  --border-color: #d3efe0;
+  --border-focus: #83d6a8;
+  --text-main: #2d5a43;
+  --text-muted: #73a58b;
+  --accent: #83d6a8;
+  --accent-contrast: #ffffff;
+  --danger: #ff9999;
 }
 
 * {
@@ -61,7 +72,6 @@ body {
   min-height: 100vh;
 }
 
-/* Header */
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -76,7 +86,6 @@ body {
   align-items: center;
   gap: 8px;
   font-weight: 700;
-  letter-spacing: 0.5px;
 }
 
 .brand-glyph {
@@ -121,22 +130,31 @@ body {
   color: var(--text-main);
 }
 
-/* Grid Layout */
 .grid {
   display: grid;
-  grid-template-columns: 340px 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
   gap: 12px;
   padding: 14px;
   flex: 1;
 }
 
+.timer-panel { grid-area: 1 / 1 / 2 / 2; }
+.tasks-panel { grid-area: 1 / 2 / 2 / 3; }
+.planner-panel { grid-area: 1 / 3 / 3 / 4; }
+.notes-panel { grid-area: 2 / 1 / 3 / 3; }
+.progress-panel { grid-area: 3 / 1 / 4 / 4; }
+
 @media (max-width: 980px) {
   .grid {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .timer-panel, .tasks-panel, .planner-panel, .notes-panel, .progress-panel {
+    grid-area: auto;
   }
 }
 
-/* Panels */
 .panel {
   background: var(--bg-panel);
   border: 1px solid var(--border-color);
@@ -161,7 +179,7 @@ body {
   color: var(--text-muted);
 }
 
-.status-indicator, .count-badge, .save-status {
+.badge {
   font-size: 10px;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -174,7 +192,6 @@ body {
   flex: 1;
 }
 
-/* Timer */
 .timer-digits {
   font-size: 60px;
   font-weight: 700;
@@ -186,7 +203,7 @@ body {
 
 .timer-modes {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 6px;
   margin-bottom: 14px;
 }
@@ -210,17 +227,8 @@ body {
 .timer-controls {
   display: flex;
   gap: 8px;
-  margin-bottom: 16px;
 }
 
-.timer-stats {
-  border-top: 1px solid var(--border-color);
-  padding-top: 10px;
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-/* Buttons & Inputs */
 .btn {
   font-family: inherit;
   font-size: 11px;
@@ -265,11 +273,10 @@ input[type="text"]:focus {
   border-color: var(--border-focus);
 }
 
-/* Task List */
 .item-list {
   list-style: none;
   overflow-y: auto;
-  max-height: 480px;
+  max-height: 200px;
 }
 
 .task-item {
@@ -313,11 +320,9 @@ input[type="text"]:focus {
   color: var(--danger);
 }
 
-/* Scratchpad */
-textarea#scratchpad {
+textarea {
   width: 100%;
   flex: 1;
-  min-height: 380px;
   background: var(--bg-inset);
   border: 1px solid var(--border-color);
   color: var(--text-main);
@@ -329,11 +334,48 @@ textarea#scratchpad {
   line-height: 1.6;
 }
 
-textarea#scratchpad:focus {
+textarea:focus {
   border-color: var(--border-focus);
 }
 
-/* Footer Status Bar */
+.planner-panel textarea {
+  min-height: 380px;
+}
+
+.notes-panel textarea {
+  min-height: 200px;
+}
+
+.progress-grid {
+  display: flex;
+  gap: 12px;
+  flex-direction: row;
+}
+
+.stat-box {
+  flex: 1;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-num {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
 .statusbar {
   display: flex;
   gap: 16px;
@@ -350,8 +392,4 @@ textarea#scratchpad:focus {
   padding: 1px 4px;
   font-size: 10px;
   color: var(--text-main);
-}
-
-.statusbar .right {
-  margin-left: auto;
 }

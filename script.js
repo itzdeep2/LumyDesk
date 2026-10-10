@@ -1,247 +1,220 @@
-(function () {
-  'use strict';
+const $ = id => document.getElementById(id) 
+const $$ = sel => document.querySelectorAll(sel)
 
-  // --- Audio Feedback (Web Audio API synth) ---
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  function triggerChime(frequency = 587.33, duration = 0.15) {
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
+let audioCtx
+function playChime() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+  if (audioCtx.state === 'suspended') audioCtx.resume()
+  const osc = audioCtx.createOscillator()
+  const gain = audioCtx.createGain()
+  osc.type = 'sine'
+  osc.frequency.setValueAtTime(587.33, audioCtx.currentTime)
+  gain.gain.setValueAtTime(0.08, audioCtx.currentTime)
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.15)
+  osc.connect(gain)
+  gain.connect(audioCtx.destination)
+  osc.start()
+  osc.stop(audioCtx.currentTime + 0.15)
+}
+
+function updateClock() {
+  const el = $('liveClock')
+  if (el) el.textContent = new Date().toTimeString().split(' ')[0]
+}
+setInterval(updateClock, 1000)
+updateClock()
+
+const savedTheme = localStorage.getItem('lumy_theme') || 'dark'
+document.body.setAttribute('data-theme', savedTheme)
+
+$$('[data-theme-btn]').forEach(btn => {   btn.classList.toggle('active', btn.dataset.themeBtn === savedTheme)   
+btn.addEventListener('click', () => {     const theme = btn.dataset.themeBtn
+document.body.setAttribute('data-theme', theme)     
+localStorage.setItem('lumy_theme', theme)     
+$$
+('[data-theme-btn]').forEach(b => b.classList.toggle('active', b === btn))
+  })
+})
+
+const state = {
+  duration: 25 * 60,
+  remaining: 25 * 60,
+  target: null,
+  interval: null,
+  running: false,
+  sessions: parseInt(localStorage.getItem('lumy_sessions') || '0', 10),
+  tasksDone: parseInt(localStorage.getItem('lumy_tasks_done') || '0', 10)
+}
+
+const ui = {
+  digits: $('timerDigits'),
+  toggle: $('timerToggle'),
+  reset: $('timerReset'),
+  status: $('timerStatus'),
+  statSess: $('statSessions'),
+  statTask: $('statTasks')
+}
+
+ui.statSess.textContent = state.sessions
+ui.statTask.textContent = state.tasksDone
+
+function renderTimer() {
+  const m = Math.floor(state.remaining / 60)
+  const s = state.remaining % 60
+  const txt = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+  ui.digits.textContent = txt
+  document.title = state.running ? `(${txt}) LumyDesk` : 'LumyDesk'
+}
+
+function tick() {
+  const diff = Math.max(0, Math.round((state.target - Date.now()) / 1000))
+  state.remaining = diff
+  renderTimer()
+
+  if (diff <= 0) {
+    clearInterval(state.interval)
+    state.running = false
+    state.sessions += 1
+    localStorage.setItem('lumy_sessions', state.sessions)
+    ui.statSess.textContent = state.sessions
+    ui.toggle.textContent = 'Start'
+    ui.status.textContent = 'DONE'
+    playChime()
   }
+}
 
-  // --- Clock Component ---
-  function updateLiveClock() {
-    const el = document.getElementById('liveClock');
-    if (!el) return;
-    const now = new Date();
-    el.textContent = now.toTimeString().split(' ')[0];
+function toggleTimer() {
+  if (state.running) {
+    clearInterval(state.interval)
+    state.running = false
+    ui.toggle.textContent = 'Resume'
+    ui.status.textContent = 'PAUSED'
+  } else {
+    state.running = true
+    state.target = Date.now() + state.remaining * 1000
+    state.interval = setInterval(tick, 200)
+    ui.toggle.textContent = 'Pause'
+    ui.status.textContent = 'RUNNING'
   }
-  setInterval(updateLiveClock, 1000);
-  updateLiveClock();
+}
 
-  // --- Theme Manager ---
-  const themeButtons = document.querySelectorAll('[data-set-theme]');
-  const savedTheme = localStorage.getItem('lumy_theme') || 'dark';
-  document.body.setAttribute('data-theme', savedTheme);
+function resetTimer() {
+  clearInterval(state.interval)
+  state.running = false
+  state.remaining = state.duration
+  ui.toggle.textContent = 'Start'
+  ui.status.textContent = 'READY'
+  renderTimer()
+}
+
+ui.toggle.addEventListener('click', toggleTimer)
+ui.reset.addEventListener('click', resetTimer)
+
+$$('.mode-btn').forEach(btn => {   btn.addEventListener('click', () => {     $$
+('.mode-btn').forEach(b => b.classList.remove('active'))
+    btn.classList.add('active')
+    state.duration = parseInt(btn.dataset.time, 10) * 60
+    resetTimer()
+  })
+})
+
+let tasks = JSON.parse(localStorage.getItem('lumy_tasks') || '[]')
+
+function renderTasks() {
+  localStorage.setItem('lumy_tasks', JSON.stringify(tasks))
+  const list = $('taskList')
+  list.innerHTML = ''
   
-  themeButtons.forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.setTheme === savedTheme);
-    btn.addEventListener('click', () => {
-      const theme = btn.dataset.setTheme;
-      document.body.setAttribute('data-theme', theme);
-      localStorage.setItem('lumy_theme', theme);
-      themeButtons.forEach(b => b.classList.toggle('active', b === btn));
-    });
-  });
+  $('taskCount').textContent = tasks.filter(t => !t.done).length
 
-  // --- Timer Engine (Delta Timestamp Based) ---
-  const timerState = {
-    durationSec: 25 * 60,
-    remainingSec: 25 * 60,
-    targetTimestamp: null,
-    intervalId: null,
-    isRunning: false,
-    completed: parseInt(localStorage.getItem('lumy_timer_completed') || '0', 10)
-  };
+  tasks.forEach(t => {
+    const li = document.createElement('li')
+    li.className = `task-item ${t.done ? 'done' : ''}`
 
-  const timerDigits = document.getElementById('timerDigits');
-  const timerToggleBtn = document.getElementById('timerToggle');
-  const timerResetBtn = document.getElementById('timerReset');
-  const timerStatus = document.getElementById('timerStatus');
-  const completedDisplay = document.getElementById('completedSessions');
-  const modeButtons = document.querySelectorAll('.mode-btn');
+    const c = document.createElement('div')
+    c.className = 'task-content'
+    
+    const box = document.createElement('input')
+    box.type = 'checkbox'
+    box.checked = t.done
+    box.addEventListener('change', () => {
+      t.done = box.checked
+      if (t.done) {
+        state.tasksDone += 1
+        localStorage.setItem('lumy_tasks_done', state.tasksDone)
+        ui.statTask.textContent = state.tasksDone
+      }
+      renderTasks()
+    })
 
-  completedDisplay.textContent = timerState.completed;
+    const lbl = document.createElement('span')
+    lbl.className = 'task-label'
+    lbl.textContent = t.text
 
-  function renderTimer() {
-    const mins = Math.floor(timerState.remainingSec / 60);
-    const secs = timerState.remainingSec % 60;
-    const formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    timerDigits.textContent = formatted;
+    c.appendChild(box)
+    c.appendChild(lbl)
 
-    if (timerState.isRunning) {
-      document.title = `(${formatted}) LumyDesk Focus`;
-    } else {
-      document.title = 'LumyDesk // Session Dashboard';
-    }
+    const del = document.createElement('button')
+    del.className = 'btn-del'
+    del.innerHTML = '&times;'
+    del.addEventListener('click', e => {
+      e.stopPropagation()
+      tasks = tasks.filter(x => x.id !== t.id)
+      renderTasks()
+    })
+
+    li.appendChild(c)
+    li.appendChild(del)
+    list.appendChild(li)
+  })
+}
+
+$('taskForm').addEventListener('submit', e => {
+  e.preventDefault()
+  const inp = $('taskInput')
+  const val = inp.value.trim()
+  if (!val) return
+  tasks.unshift({ id: Date.now(), text: val, done: false })
+  inp.value = ''
+  renderTasks()
+})
+
+renderTasks()
+
+function setupAutoSave(inputId, statusId, storageKey) {
+  const el = $(inputId)
+  const status = $(statusId)
+  let to = null
+  
+  el.value = localStorage.getItem(storageKey) || ''
+  
+  el.addEventListener('input', () => {
+    status.textContent = 'Saving...'
+    clearTimeout(to)
+    to = setTimeout(() => {
+      localStorage.setItem(storageKey, el.value)
+      status.textContent = 'Saved'
+    }, 500)
+  })
+}
+
+setupAutoSave('plannerInput', 'plannerStatus', 'lumy_planner')
+setupAutoSave('notesInput', 'notesStatus', 'lumy_notes')
+
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.activeElement) document.activeElement.blur()
+    return
   }
-
-  function tick() {
-    const now = Date.now();
-    const diffSec = Math.max(0, Math.round((timerState.targetTimestamp - now) / 1000));
-    timerState.remainingSec = diffSec;
-    renderTimer();
-
-    if (diffSec <= 0) {
-      clearInterval(timerState.intervalId);
-      timerState.isRunning = false;
-      timerState.completed += 1;
-      localStorage.setItem('lumy_timer_completed', timerState.completed);
-      completedDisplay.textContent = timerState.completed;
-
-      timerToggleBtn.textContent = 'Start [Space]';
-      timerStatus.textContent = 'SESSION COMPLETE';
-      triggerChime(880, 0.4);
-    }
+  const typing = ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)
+  if (e.code === 'Space' && !typing) {
+    e.preventDefault()
+    toggleTimer()
   }
-
-  function startTimer() {
-    if (timerState.isRunning) return;
-    timerState.isRunning = true;
-    timerState.targetTimestamp = Date.now() + timerState.remainingSec * 1000;
-    timerState.intervalId = setInterval(tick, 200);
-    timerToggleBtn.textContent = 'Pause [Space]';
-    timerStatus.textContent = 'RUNNING';
-    triggerChime(440, 0.1);
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+    e.preventDefault()
+    $('taskInput').focus()
   }
+})
 
-  function pauseTimer() {
-    if (!timerState.isRunning) return;
-    clearInterval(timerState.intervalId);
-    timerState.isRunning = false;
-    timerToggleBtn.textContent = 'Resume [Space]';
-    timerStatus.textContent = 'PAUSED';
-  }
-
-  function toggleTimer() {
-    if (timerState.isRunning) {
-      pauseTimer();
-    } else {
-      startTimer();
-    }
-  }
-
-  function resetTimer() {
-    clearInterval(timerState.intervalId);
-    timerState.isRunning = false;
-    timerState.remainingSec = timerState.durationSec;
-    timerToggleBtn.textContent = 'Start [Space]';
-    timerStatus.textContent = 'READY';
-    renderTimer();
-  }
-
-  timerToggleBtn.addEventListener('click', toggleTimer);
-  timerResetBtn.addEventListener('click', resetTimer);
-
-  modeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      modeButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const mins = parseInt(btn.dataset.minutes, 10);
-      timerState.durationSec = mins * 60;
-      resetTimer();
-    });
-  });
-
-  // --- Task Queue Component ---
-  const taskForm = document.getElementById('taskForm');
-  const taskInput = document.getElementById('taskInput');
-  const taskList = document.getElementById('taskList');
-  const taskCount = document.getElementById('taskCount');
-
-  let tasks = JSON.parse(localStorage.getItem('lumy_tasks') || '[]');
-
-  function saveAndRenderTasks() {
-    localStorage.setItem('lumy_tasks', JSON.stringify(tasks));
-    taskList.innerHTML = '';
-
-    const remaining = tasks.filter(t => !t.done).length;
-    taskCount.textContent = `${remaining} remaining`;
-
-    tasks.forEach(task => {
-      const li = document.createElement('li');
-      li.className = `task-item ${task.done ? 'done' : ''}`;
-
-      const content = document.createElement('div');
-      content.className = 'task-content';
-      
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = task.done;
-      checkbox.addEventListener('change', () => {
-        task.done = checkbox.checked;
-        saveAndRenderTasks();
-      });
-
-      const label = document.createElement('span');
-      label.className = 'task-label';
-      label.textContent = task.text;
-
-      content.appendChild(checkbox);
-      content.appendChild(label);
-
-      const delBtn = document.createElement('button');
-      delBtn.className = 'btn-del';
-      delBtn.innerHTML = '&times;';
-      delBtn.title = 'Remove';
-      delBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        tasks = tasks.filter(t => t.id !== task.id);
-        saveAndRenderTasks();
-      });
-
-      li.appendChild(content);
-      li.appendChild(delBtn);
-      taskList.appendChild(li);
-    });
-  }
-
-  taskForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const text = taskInput.value.trim();
-    if (!text) return;
-    tasks.unshift({ id: Date.now(), text, done: false });
-    taskInput.value = '';
-    saveAndRenderTasks();
-  });
-
-  saveAndRenderTasks();
-
-  // --- Scratchpad Component ---
-  const scratchpad = document.getElementById('scratchpad');
-  const saveIndicator = document.getElementById('saveIndicator');
-  let saveTimeout = null;
-
-  scratchpad.value = localStorage.getItem('lumy_scratchpad') || '';
-
-  scratchpad.addEventListener('input', () => {
-    saveIndicator.textContent = 'Saving...';
-    clearTimeout(saveTimeout);
-    saveTimeout = setTimeout(() => {
-      localStorage.setItem('lumy_scratchpad', scratchpad.value);
-      saveIndicator.textContent = 'Saved';
-    }, 400);
-  });
-
-  // --- Global Keyboard Shortcuts ---
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      if (document.activeElement) document.activeElement.blur();
-      return;
-    }
-
-    const isTyping = ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName);
-
-    if (e.code === 'Space' && !isTyping) {
-      e.preventDefault();
-      toggleTimer();
-    }
-
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'n') {
-      e.preventDefault();
-      taskInput.focus();
-    }
-  });
-
-  renderTimer();
-})();
+renderTimer()
