@@ -1,128 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>LumyDesk</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LumyDesk // Session Dashboard</title>
+<link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <!-- left menu -->
-<aside class="sidebar">
-<h1 class="logo">Lumy<span>Desk</span></h1>
-<nav>
-<div class="theme-box">
-<label for="themeSelect">Theme</label>
-<select id="themeSelect">
-<option value="auto">✨ Auto</option>
-<option value="peach">Peach</option>
-<option value="mint">Mint</option>
-<option value="lavender">Lavender</option>
-<option value="sky">Sky</option>
-<option value="night">Night</option>
-</select>
+<body data-theme="dark">
+<div class="layout">
+<!-- Top Bar -->
+<header class="topbar">
+<div class="brand">
+<span class="brand-glyph">&#9632;</span>
+<span class="brand-name">LumyDesk</span>
+<span class="brand-ver">v2.0-mono</span>
 </div>
-<button class="nav-btn active" data-page="timer">Timer</button>
-<button class="nav-btn" data-page="todo">To-do</button>
-<button class="nav-btn" data-page="notes">Notes</button>
-<button class="nav-btn" data-page="planner">Planner</button>
-<button class="nav-btn" data-page="calendar">Calendar</button>
-<button class="nav-btn" data-page="progress">Progress</button>
-</nav>
-</aside>
 
-<!-- main area, only one page shows at a time -->
-<main class="content">
-<section class="page active" id="timer">
-<h2>Pomodoro Timer</h2>
-      <div class="timer-box">
-        <div class="mode-buttons">
-<button class="mode-btn active" data-mode="focus">Focus</button>
-<button class="mode-btn" data-mode="short">Short break</button>
-<button class="mode-btn" data-mode="long">Long break</button>
-</div>
-<div id="timerDisplay">25:00</div>
-<div class="timer-buttons">
-<button class="btn" id="startBtn">Start</button>
-<button class="btn" id="pauseBtn">Pause</button>
-<button class="btn" id="resetBtn">Reset</button>
+<div class="topbar-meta">
+<div id="liveClock" class="clock-display">00:00:00</div>
+<div class="theme-select">
+<button type="button" class="btn-theme active" data-set-theme="dark">Dark</button>
+<button type="button" class="btn-theme" data-set-theme="paper">Paper</button>
+<button type="button" class="btn-theme" data-set-theme="amber">Amber</button>
 </div>
 </div>
-</section>
-<section class="page" id="todo">
-<h2>To-do List</h2>
-      <div class="add-row">
-<input type="text" id="todoInput" placeholder="What do you need to do?">
-<button class="btn" id="todoAddBtn">Add</button>
-</div>
-<ul id="todoList"></ul>
-</section>
-<section class="page" id="notes">
-<h2>Notes</h2>
-<div class="notes-layout">
-<div class="notes-side">
-<button class="btn" id="newNoteBtn">+ New note</button>
-<ul id="noteList"></ul>
-</div>
-<div class="notes-editor">
-<input type="text" id="noteTitle" placeholder="Note title">
-<textarea id="noteBody" placeholder="Write your notes here..."></textarea>
-<button class="btn" id="deleteNoteBtn">Delete note</button>
-</div>
-</div>
-</section>
-<section class="page" id="planner">
-<h2>Study Planner</h2>
-<div class="planner-layout">
-  <div class="subject-panel">
-    <div class="add-row">
-      <input type="text" id="subjectInput" placeholder="Add subject (eg. Physics)">
-      <button class="btn" id="subjectAddBtn">+</button>
-    </div>
-    <p class="hint">Drag a chapter to a day. Double click a chapter to delete it.</p>
-    <div id="subjectList"></div>
-  </div>
+</header>
 
-  <div class="week-panel">
-    <div class="week-nav">
-      <button class="btn" id="prevWeek">◀</button>
-      <strong id="weekLabel"></strong>
-      <button class="btn" id="nextWeek">▶</button>
-    </div>
-    <div id="weekBoard"></div>
-  </div>
+<!-- Main Grid -->
+<main class="grid">
+<!-- Section: Focus Engine -->
+<section class="panel timer-panel">
+<div class="panel-header">
+<h2>01 / Focus Timer</h2>
+<span class="status-indicator" id="timerStatus">READY</span>
+</div>
+<div class="panel-body timer-body">
+<div class="timer-digits" id="timerDigits">25:00</div>
+
+<div class="timer-modes">
+<button class="mode-btn active" data-minutes="25">Deep (25m)</button>
+<button class="mode-btn" data-minutes="50">Sprint (50m)</button>
+<button class="mode-btn" data-minutes="5">Break (5m)</button>
+<button class="mode-btn" data-minutes="15">Rest (15m)</button>
+</div>
+
+<div class="timer-controls">
+<button id="timerToggle" class="btn btn-primary">Start [Space]</button>
+<button id="timerReset" class="btn">Reset</button>
+</div>
+
+<div class="timer-stats">
+<span>Completed blocks today: <strong id="completedSessions">0</strong></span>
+</div>
 </div>
 </section>
-<section class="page" id="calendar">
-<h2>Calendar</h2>
-<div class="cal-head">
-<button class="btn" id="prevMonth">◀</button>
-<strong id="monthLabel"></strong>
-<button class="btn" id="nextMonth">▶</button>
+
+<!-- Section: Task Stream -->
+<section class="panel tasks-panel">
+<div class="panel-header">
+<h2>02 / Work Queue</h2>
+<span class="count-badge" id="taskCount">0 remaining</span>
 </div>
-<div id="calendarGrid"></div>
-<div id="dayDetails"></div>
+<div class="panel-body">
+<form id="taskForm" class="input-row">
+<input 
+type="text" 
+id="taskInput" 
+placeholder="Add next actionable item... (Press Enter)" 
+autocomplete="off" 
+required 
+/>
+<button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+<ul id="taskList" class="item-list"></ul>
+</div>
 </section>
-<section class="page" id="progress">
-<h2>Progress</h2>
-<div class="stat-row">
-<div class="stat-card"><h3 id="statChapters">0</h3><p>Chapters done</p></div>
-<div class="stat-card"><h3 id="statPercent">0%</h3><p>Overall progress</p></div>
-<div class="stat-card"><h3 id="statTasks">0</h3><p>Tasks done</p></div>
-<div class="stat-card"><h3 id="statFocus">0</h3><p>Focus min today</p></div>
+
+<!-- Section: Scratchpad -->
+<section class="panel notes-panel">
+<div class="panel-header">
+<h2>03 / Scratchpad</h2>
+<span class="save-status" id="saveIndicator">Saved</span>
 </div>
-<div id="progressBars"></div>
-<div class="chart-box">
-<canvas id="subjectChart"></canvas>
-</div>
-<h3 class="chart-title">Focus minutes (last 7 days)</h3>
-<div class="chart-box">
-<canvas id="focusChart"></canvas>
+<div class="panel-body">
+<textarea 
+id="scratchpad" 
+placeholder="// Persistent local buffer. Captures quick notes, dump memory, or write drafts..."
+spellcheck="false"
+></textarea>
 </div>
 </section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<!-- Keyboard Shortcut Bar -->
+<footer class="statusbar">
+<div class="status-item"><kbd>Space</kbd> Toggle Timer</div>
+<div class="status-item"><kbd>Ctrl</kbd> + <kbd>N</kbd> Focus Tasks</div>
+<div class="status-item"><kbd>Esc</kbd> Clear Input</div>
+<div class="status-item right">Local-First &bull; Zero Remote State</div>
+</footer>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>
