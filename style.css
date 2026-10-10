@@ -1,12 +1,8 @@
-/* ==========================================================================
-   LumyDesk Minimal Industrial Theme
-   ========================================================================== */
-
 :root {
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Segoe UI Mono", Menlo, Consolas, monospace;
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   
-  /* Default: Dark Charcoal Slate */
+  /* Dark Charcoal Slate */
   --bg-app: #121316;
   --bg-panel: #18191d;
   --bg-inset: #0e0f11;
@@ -14,10 +10,10 @@
   --border-focus: #525866;
   --text-main: #e6e8eb;
   --text-muted: #848995;
-  --accent: #5e81ac;
+  --accent: #4c6ef5;
   --accent-contrast: #ffffff;
   --success: #a3be8c;
-  --danger: #bf616a;
+  --danger: #e06c75;
 }
 
 [data-theme="paper"] {
@@ -120,7 +116,7 @@ body {
   color: var(--text-muted);
   font-family: inherit;
   font-size: 11px;
-  padding: 2px 7px;
+  padding: 3px 8px;
   cursor: pointer;
 }
 
@@ -184,10 +180,10 @@ body {
 
 /* Timer */
 .timer-digits {
-  font-size: 64px;
+  font-size: 60px;
   font-weight: 700;
   text-align: center;
-  margin: 18px 0;
+  margin: 16px 0;
   letter-spacing: -2px;
   font-variant-numeric: tabular-nums;
 }
@@ -314,7 +310,7 @@ input[type="text"]:focus {
   cursor: pointer;
   padding: 0 4px;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .btn-del:hover {
