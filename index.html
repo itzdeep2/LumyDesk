@@ -6,103 +6,44 @@
   <title>LumyDesk</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body data-theme="dark">
-  <div class="layout">
-    <header class="topbar">
-      <div class="brand">
-        <span class="brand-glyph">&#9632;</span>
-        <span class="brand-name">LumyDesk</span>
-        <span class="brand-ver">v3.0</span>
+<body>
+  <nav>
+    <h1>LumyDesk</h1>
+    <select id="theme-picker">
+      <option value="peach">Peach</option>
+      <option value="mint">Mint</option>
+      <option value="lavender">Lavender</option>
+      <option value="sky">Sky</option>
+      <option value="night">Night</option>
+    </select>
+  </nav>
+  
+  <main>
+    <section class="card" id="timer-section">
+      <h2>Timer</h2>
+      <div id="time-display">25:00</div>
+      <div class="controls">
+        <button id="start-btn">Start</button>
+        <button id="reset-btn">Reset</button>
       </div>
-      <div class="topbar-meta">
-        <div id="liveClock" class="clock-display"></div>
-        <div class="theme-select">
-          <button class="btn-theme active" data-theme-btn="dark">Dark</button>
-          <button class="btn-theme" data-theme-btn="paper">Paper</button>
-          <button class="btn-theme" data-theme-btn="lavender">Lavender</button>
-          <button class="btn-theme" data-theme-btn="mint">Mint</button>
-        </div>
+      <p>Sessions completed: <span id="session-count">0</span></p>
+    </section>
+
+    <section class="card" id="todo-section">
+      <h2>To-Do</h2>
+      <div class="input-group">
+        <input type="text" id="todo-input" placeholder="what needs to be done?">
+        <button id="add-todo">Add</button>
       </div>
-    </header>
+      <ul id="todo-list"></ul>
+    </section>
 
-    <main class="grid">
-      <section class="panel timer-panel">
-        <div class="panel-header">
-          <h2>Focus</h2>
-          <span class="badge" id="timerStatus">READY</span>
-        </div>
-        <div class="panel-body">
-          <div class="timer-digits" id="timerDigits">25:00</div>
-          <div class="timer-modes">
-            <button class="mode-btn active" data-time="25">25m</button>
-            <button class="mode-btn" data-time="50">50m</button>
-            <button class="mode-btn" data-time="5">5m</button>
-            <button class="mode-btn" data-time="15">15m</button>
-          </div>
-          <div class="timer-controls">
-            <button id="timerToggle" class="btn btn-primary">Start</button>
-            <button id="timerReset" class="btn">Reset</button>
-          </div>
-        </div>
-      </section>
+    <section class="card" id="notes-section">
+      <h2>Notes</h2>
+      <textarea id="notes-area" placeholder="dump your thoughts here..."></textarea>
+    </section>
+  </main>
 
-      <section class="panel tasks-panel">
-        <div class="panel-header">
-          <h2>Queue</h2>
-          <span class="badge" id="taskCount">0</span>
-        </div>
-        <div class="panel-body">
-          <form id="taskForm" class="input-row">
-            <input type="text" id="taskInput" autocomplete="off" required>
-            <button type="submit" class="btn btn-primary">+</button>
-          </form>
-          <ul id="taskList" class="item-list"></ul>
-        </div>
-      </section>
-
-      <section class="panel planner-panel">
-        <div class="panel-header">
-          <h2>Planner</h2>
-          <span class="badge" id="plannerStatus">Saved</span>
-        </div>
-        <div class="panel-body">
-          <textarea id="plannerInput" spellcheck="false" placeholder="08:00 - Wake up&#10;09:00 - Deep work..."></textarea>
-        </div>
-      </section>
-
-      <section class="panel notes-panel">
-        <div class="panel-header">
-          <h2>Scratchpad</h2>
-          <span class="badge" id="notesStatus">Saved</span>
-        </div>
-        <div class="panel-body">
-          <textarea id="notesInput" spellcheck="false" placeholder="Brain dump..."></textarea>
-        </div>
-      </section>
-
-      <section class="panel progress-panel">
-        <div class="panel-header">
-          <h2>Progress</h2>
-        </div>
-        <div class="panel-body progress-grid">
-          <div class="stat-box">
-            <div class="stat-num" id="statSessions">0</div>
-            <div class="stat-label">Focus Blocks</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num" id="statTasks">0</div>
-            <div class="stat-label">Tasks Done</div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="statusbar">
-      <div class="status-item"><kbd>Space</kbd> Timer</div>
-      <div class="status-item"><kbd>Ctrl</kbd> + <kbd>N</kbd> Tasks</div>
-      <div class="status-item"><kbd>Esc</kbd> Unfocus</div>
-    </footer>
-  </div>
   <script src="script.js"></script>
 </body>
 </html>
