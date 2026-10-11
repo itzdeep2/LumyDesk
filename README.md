@@ -7,7 +7,7 @@ A low-stress, pastel dashboard built because opening six bloated productivity ta
 ## Why I Built This
 
 I wanted something super clean, lightweight, and actually pleasant to look at while grinding through study sessions.
-Instead of switching between a timer app, a notepad, and a task list, LumyDesk bundles the core essentials into one single page. No accounts, no paywalls, no clutter.
+Instead of switching between a timer app, a notepad, and a task list, LumyDesk bundles the core essentials into one.
 
 ---
 
