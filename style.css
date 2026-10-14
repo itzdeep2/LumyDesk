@@ -161,11 +161,14 @@ font-size: 0.9rem;
 cursor: grab;
 user-select: none;
 }
+
 #week-grid {
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-gap: 10px;
+grid-template-columns: repeat(7, minmax(110px, 1fr));
+gap: 8px;
 margin-top: 14px;
+overflow-x: auto;
+padding-bottom: 8px;
 }
 
 .day-col {
