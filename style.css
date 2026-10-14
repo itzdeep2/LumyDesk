@@ -161,3 +161,34 @@ font-size: 0.9rem;
 cursor: grab;
 user-select: none;
 }
+#week-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+gap: 10px;
+margin-top: 14px;
+}
+
+.day-col {
+background: var(--bg);
+border-radius: 8px;
+padding: 8px;
+min-height: 120px;
+}
+
+.day-col h3 {
+font-size: 0.85rem;
+text-align: center;
+margin-bottom: 6px;
+}
+
+.day-drop {
+min-height: 80px;
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+.day-drop.dragover {
+outline: 2px dashed var(--text);
+border-radius: 6px;
+}

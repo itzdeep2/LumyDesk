@@ -109,3 +109,87 @@ notesArea.addEventListener('input', (e) => {
 });
 
 renderTodos();
+
+const subjectInput = document.getElementById('subject-name');
+const chapterInput = document.getElementById('chapter-name');
+const addChapterBtn = document.getElementById('add-chapter-btn');
+const plannerTray = document.getElementById('planner-tray');
+
+let chapters = JSON.parse(localStorage.getItem('chapters')) || [];
+
+function saveChapters() {
+localStorage.setItem('chapters', JSON.stringify(chapters));
+}
+
+function renderTray() {
+plannerTray.innerHTML = '';
+chapters.filter(c => !c.day).forEach((c, idx) => {
+const chip = document.createElement('div');
+chip.className = 'chapter-chip';
+chip.draggable = true;
+chip.dataset.id = c.id;
+chip.innerText = `${c.subject}: ${c.name}`;
+chip.addEventListener('dragstart', (e) => {
+e.dataTransfer.setData('text/plain', c.id);
+});
+plannerTray.appendChild(chip);
+});
+}
+
+addChapterBtn.addEventListener('click', () => {
+const sub = subjectInput.value.trim();
+const chap = chapterInput.value.trim();
+if (!sub || !chap) return;
+chapters.push({ id: Date.now().toString(), subject: sub, name: chap, day: null });
+chapterInput.value = '';
+saveChapters();
+renderTray();
+});
+
+renderTray();
+
+const dayDrops = document.querySelectorAll('.day-drop');
+
+dayDrops.forEach(drop => {
+  drop.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    drop.classList.add('dragover');
+  });
+  drop.addEventListener('dragleave', () => {
+    drop.classList.remove('dragover');
+  });
+  drop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    drop.classList.remove('dragover');
+    const id = e.dataTransfer.getData('text/plain');
+    const day = drop.parentElement.dataset.day;
+    const target = chapters.find(c => c.id === id);
+    if (target) {
+      target.day = day;
+      saveChapters();
+      renderTray();
+      renderDays();
+    }
+  });
+});
+
+function renderDays() {
+  dayDrops.forEach(drop => {
+    const day = drop.parentElement.dataset.day;
+    drop.innerHTML = '';
+    chapters.filter(c => c.day === day).forEach(c => {
+      const item = document.createElement('div');
+      item.className = 'chapter-chip';
+      item.innerText = `${c.subject}: ${c.name}`;
+      item.addEventListener('click', () => {
+        c.day = null;
+        saveChapters();
+        renderTray();
+        renderDays();
+      });
+      drop.appendChild(item);
+    });
+  });
+}
+
+renderDays();
