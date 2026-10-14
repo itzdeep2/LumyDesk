@@ -38,10 +38,15 @@
       <ul id="todo-list"></ul>
     </section>
 
-    <section class="card" id="notes-section">
-      <h2>Notes</h2>
-      <textarea id="notes-area" placeholder="dump your thoughts here..."></textarea>
-    </section>
+    <section class="card" id="planner-section">
+      <h2>Study Planner</h2>
+      <div class="planner-form">
+        <input type="text" id="subject-name" placeholder="Subject (e.g. Physics)">
+        <input type="text" id="chapter-name" placeholder="Chapter name">
+        <button id="add-chapter-btn">Add</button>
+      </div>
+      <div id="planner-tray"></div>
+    </section>>
   </main>
 
   <script src="script.js"></script>

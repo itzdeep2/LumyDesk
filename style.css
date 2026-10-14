@@ -136,3 +136,28 @@ textarea {
   height: 200px;
   resize: vertical;
 }
+
+.planner-form {
+display: flex;
+gap: 8px;
+margin-bottom: 12px;
+}
+
+#planner-tray {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+min-height: 40px;
+padding: 8px;
+border: 1px dashed var(--accent);
+border-radius: 8px;
+}
+
+.chapter-chip {
+background: var(--accent);
+padding: 6px 12px;
+border-radius: 20px;
+font-size: 0.9rem;
+cursor: grab;
+user-select: none;
+}
