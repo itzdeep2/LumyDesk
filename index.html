@@ -7,19 +7,30 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <nav>
-    <h1>LumyDesk</h1>
-    <select id="theme-picker">
-      <option value="peach">Peach</option>
-      <option value="mint">Mint</option>
-      <option value="lavender">Lavender</option>
-      <option value="sky">Sky</option>
-      <option value="night">Night</option>
-    </select>
-  </nav>
+
+<aside class="sidebar">
+<div class="logo">
+<h1>LumyDesk 🌸</h1>
+</div>
+<nav class="nav-links">
+<button class="nav-btn active" data-tab="timer">⏱️ Timer</button>
+<button class="nav-btn" data-tab="todo">✅ To-Do</button>
+<button class="nav-btn" data-tab="planner">🗓️ Planner</button>
+<button class="nav-btn" data-tab="notes">📝 Notes</button>
+</nav>
+<div class="sidebar-footer">
+<select id="theme-picker">
+<option value="peach">Peach</option>
+<option value="mint">Mint</option>
+<option value="lavender">Lavender</option>
+<option value="sky">Sky</option>
+<option value="night">Night</option>
+</select>
+</div>
+</aside>
   
   <main>
-    <section class="card" id="timer-section">
+    <section class="tab-pane active" id="timer">
       <h2>Timer</h2>
       <div id="time-display">25:00</div>
       <div class="controls">
@@ -29,7 +40,7 @@
       <p>Sessions completed: <span id="session-count">0</span></p>
     </section>
 
-    <section class="card" id="todo-section">
+    <section class="tab-pane" id="todo">>
       <h2>To-Do</h2>
       <div class="input-group">
         <input type="text" id="todo-input" placeholder="what needs to be done?">
@@ -38,12 +49,12 @@
       <ul id="todo-list"></ul>
     </section>
 
-    <section class="card" id="notes-section">
+    <section class="tab-pane" id="notes">>
       <h2>Notes</h2>
       <textarea id="notes-area" placeholder="dump your thoughts here..."></textarea>
     </section>
 
-    <section class="card" id="planner-section">
+    <section class="tab-pane" id="planner">
       <h2>Study Planner</h2>
       <div class="planner-form">
         <input type="text" id="subject-name" placeholder="Subject (e.g. Physics)">
