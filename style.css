@@ -41,67 +41,72 @@ font-family: system-ui, sans-serif;
 }
 
 body {
-background: var(--bg);
-color: var(--text);
-transition: background 0.3s;
-padding: 20px;
-}
-
-body {
 display: flex;
 min-height: 100vh;
+margin: 0;
 padding: 0;
+background: var(--bg);
+color: var(--text);
+transition: background 0.3s ease;
 }
 
 .sidebar {
-width: 240px;
+width: 220px;
 background: var(--card-bg);
 padding: 24px 16px;
 display: flex;
 flex-direction: column;
-gap: 20px;
-border-right: 1px solid rgba(0, 0, 0, 0.05);
+gap: 24px;
+border-right: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.nav-links {
+.brand h1 {
+font-size: 1.4rem;
+}
+
+.nav-menu {
 display: flex;
 flex-direction: column;
 gap: 8px;
 flex-grow: 1;
 }
 
-.nav-btn {
-display: flex;
-align-items: center;
-gap: 10px;
-padding: 12px 14px;
-border-radius: 8px;
+.nav-item {
+text-align: left;
 background: transparent;
-color: var(--text);
 border: none;
-font-size: 0.95rem;
+padding: 10px 14px;
+border-radius: 8px;
+color: var(--text);
 font-weight: 600;
 cursor: pointer;
-text-align: left;
 }
 
-.nav-btn.active, .nav-btn:hover {
+.nav-item.active,
+.nav-item:hover {
 background: var(--accent);
 }
 
-main {
+.theme-box {
+display: flex;
+flex-direction: column;
+gap: 6px;
+font-size: 0.85rem;
+}
+
+.content-area {
 flex-grow: 1;
 padding: 32px;
 overflow-y: auto;
 }
 
-.tab-pane {
+.view-panel {
 display: none;
-max-width: 800px;
+max-width: 900px;
 margin: 0 auto;
 }
 
-.tab-pane.active {
+.view-panel.active {
 display: block;
 }
 
@@ -240,33 +245,51 @@ gap: 6px;
 outline: 2px dashed var(--text);
 border-radius: 6px;
 }
-.progress-grid {
+
+.stats-container {
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 gap: 16px;
 margin-top: 16px;
-}
-
-.stat-card {
 text-align: center;
-padding: 24px;
 }
 
-.stat-value {
+.stat-item {
+background: var(--bg);
+padding: 20px;
+border-radius: 10px;
+}
+
+.stat-number {
 display: block;
-font-size: 2.2rem;
-font-weight: 700;
-margin-bottom: 6px;
+font-size: 2rem;
+font-weight: bold;
 }
 
-.stat-label {
+.stat-description {
 font-size: 0.85rem;
 opacity: 0.8;
 }
 
-#calendar-view {
+#calendar-header {
+margin: 16px 0 8px;
+font-weight: bold;
+}
+
+#calendar-grid {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 6px;
+background: var(--bg);
+padding: 12px;
+border-radius: 8px;
+min-height: 200px;
+}
+
+.cal-day-cell {
 background: var(--card-bg);
-border-radius: 12px;
-padding: 20px;
-margin-top: 16px;
+border-radius: 6px;
+padding: 8px;
+min-height: 60px;
+font-size: 0.8rem;
 }
