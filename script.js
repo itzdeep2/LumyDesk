@@ -225,3 +225,23 @@ if (savedTab) {
     defaultPane.classList.add('active');
   }
 }
+
+const totalFocus = document.getElementById('total-focus-time');
+const totalTasks = document.getElementById('total-tasks-done');
+const totalChapters = document.getElementById('total-chapters-done');
+
+function updateProgressView() {
+  if (!totalFocus || !totalTasks || !totalChapters) return;
+  const hours = ((sessions * 25) / 60).toFixed(1);
+  totalFocus.innerText = `${hours}h`;
+  totalTasks.innerText = todos.filter(t => t.done).length;
+  totalChapters.innerText = chapters.filter(c => c.day !== null).length;
+}
+
+updateProgressView();
+
+const calView = document.getElementById('calendar-view');
+if (calView) {
+  const d = new Date();
+  calView.innerHTML = `<p>Active study month: <strong>${d.toLocaleString('default', { month: 'long', year: 'numeric' })}</strong></p>`;
+}

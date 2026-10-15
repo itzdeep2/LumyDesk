@@ -17,6 +17,8 @@
 <button class="nav-btn" data-tab="todo">✅ To-Do</button>
 <button class="nav-btn" data-tab="planner">🗓️ Planner</button>
 <button class="nav-btn" data-tab="notes">📝 Notes</button>
+<button class="nav-btn" data-tab="calendar">📅 Calendar</button>
+<button class="nav-btn" data-tab="progress">📊 Progress</button>
 </nav>
 <div class="sidebar-footer">
 <select id="theme-picker">
@@ -70,6 +72,28 @@
         <div class="day-col" data-day="Fri"><h3>Fri</h3><div class="day-drop"></div></div>
         <div class="day-col" data-day="Sat"><h3>Sat</h3><div class="day-drop"></div></div>
         <div class="day-col" data-day="Sun"><h3>Sun</h3><div class="day-drop"></div></div>
+      </div>
+    </section>
+    <section class="tab-pane" id="calendar">
+      <h2>Calendar</h2>
+      <div id="calendar-view"></div>
+    </section>
+
+    <section class="tab-pane" id="progress">
+      <h2>Overview</h2>
+      <div class="progress-grid">
+        <div class="card stat-card">
+          <span class="stat-value" id="total-focus-time">0h</span>
+          <span class="stat-label">Focus Time</span>
+        </div>
+        <div class="card stat-card">
+          <span class="stat-value" id="total-tasks-done">0</span>
+          <span class="stat-label">Tasks Completed</span>
+        </div>
+        <div class="card stat-card">
+          <span class="stat-value" id="total-chapters-done">0</span>
+          <span class="stat-label">Chapters Scheduled</span>
+        </div>
       </div>
     </section>
   </main>

@@ -240,3 +240,33 @@ gap: 6px;
 outline: 2px dashed var(--text);
 border-radius: 6px;
 }
+.progress-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 16px;
+margin-top: 16px;
+}
+
+.stat-card {
+text-align: center;
+padding: 24px;
+}
+
+.stat-value {
+display: block;
+font-size: 2.2rem;
+font-weight: 700;
+margin-bottom: 6px;
+}
+
+.stat-label {
+font-size: 0.85rem;
+opacity: 0.8;
+}
+
+#calendar-view {
+background: var(--card-bg);
+border-radius: 12px;
+padding: 20px;
+margin-top: 16px;
+}
