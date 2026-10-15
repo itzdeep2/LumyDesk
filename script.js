@@ -123,7 +123,7 @@ localStorage.setItem('chapters', JSON.stringify(chapters));
 
 function renderTray() {
 plannerTray.innerHTML = '';
-chapters.filter(c => !c.day).forEach((c, idx) => {
+chapters.filter(c => !c.day).forEach((c) => {
 const chip = document.createElement('div');
 chip.className = 'chapter-chip';
 chip.draggable = true;
@@ -193,3 +193,35 @@ function renderDays() {
 }
 
 renderDays();
+
+const navBtns = document.querySelectorAll('.nav-btn');
+const tabPanes = document.querySelectorAll('.tab-pane');
+
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+
+    navBtns.forEach(b => b.classList.remove('active'));
+    tabPanes.forEach(p => p.classList.remove('active'));
+
+    btn.classList.add('active');
+    const activePane = document.getElementById(target);
+    if (activePane) {
+      activePane.classList.add('active');
+    }
+
+    localStorage.setItem('activeTab', target);
+  });
+});
+
+const savedTab = localStorage.getItem('activeTab');
+if (savedTab) {
+  const defaultBtn = document.querySelector(`.nav-btn[data-tab="${savedTab}"]`);
+  const defaultPane = document.getElementById(savedTab);
+  if (defaultBtn && defaultPane) {
+    navBtns.forEach(b => b.classList.remove('active'));
+    tabPanes.forEach(p => p.classList.remove('active'));
+    defaultBtn.classList.add('active');
+    defaultPane.classList.add('active');
+  }
+}
