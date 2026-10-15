@@ -255,3 +255,63 @@ if (calView) {
   const d = new Date();
   calView.innerHTML = `<p>Active study month: <strong>${d.toLocaleString('default', { month: 'long', year: 'numeric' })}</strong></p>`;
 }
+
+const navItems = document.querySelectorAll('.nav-item');
+const viewPanels = document.querySelectorAll('.view-panel');
+
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const target = item.dataset.view;
+
+    navItems.forEach(btn => btn.classList.remove('active'));
+    viewPanels.forEach(panel => panel.classList.remove('active'));
+
+    item.classList.add('active');
+    const selectedPanel = document.getElementById(`view-${target}`);
+    if (selectedPanel) selectedPanel.classList.add('active');
+
+    localStorage.setItem('activeView', target);
+  });
+});
+
+const restoredView = localStorage.getItem('activeView') || 'timer';
+const activeBtn = document.querySelector(`.nav-item[data-view="${restoredView}"]`);
+const activePanel = document.getElementById(`view-${restoredView}`);
+if (activeBtn && activePanel) {
+  navItems.forEach(btn => btn.classList.remove('active'));
+  viewPanels.forEach(panel => panel.classList.remove('active'));
+  activeBtn.classList.add('active');
+  activePanel.classList.add('active');
+}
+
+function refreshMetrics() {
+  const statHours = document.getElementById('stat-focus-hours');
+  const statTasks = document.getElementById('stat-tasks-done');
+  const statChapters = document.getElementById('stat-chapters-scheduled');
+
+  if (statHours) statHours.innerText = `${((sessions * 25) / 60).toFixed(1)}h`;
+  if (statTasks) statTasks.innerText = todos.filter(t => t.done).length;
+  if (statChapters) statChapters.innerText = chapters.filter(c => c.day !== null).length;
+}
+
+refreshMetrics();
+
+function buildCalendar() {
+  const calHeader = document.getElementById('calendar-header');
+  const calGrid = document.getElementById('calendar-grid');
+  if (!calHeader || !calGrid) return;
+
+  const now = new Date();
+  calHeader.innerText = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+  calGrid.innerHTML = '';
+
+  const totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  for (let i = 1; i <= totalDays; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day-cell';
+    cell.innerText = i;
+    calGrid.appendChild(cell);
+  }
+}
+
+buildCalendar();
