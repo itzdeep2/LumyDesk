@@ -15,13 +15,21 @@ let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
 sessionCount.innerText = sessions;
 notesArea.value = localStorage.getItem('notes') || '';
-document.body.className = localStorage.getItem('theme') || 'peach';
-themePicker.value = document.body.className;
+function applySelectedTheme(val) {
+  if (val === 'auto') {
+    const currentHour = new Date().getHours();
+    document.body.className = (currentHour >= 19 || currentHour < 6) ? 'night' : 'peach';
+  } else {
+    document.body.className = val;
+  }
+}
 
 themePicker.addEventListener('change', (e) => {
-  document.body.className = e.target.value;
   localStorage.setItem('theme', e.target.value);
+  applySelectedTheme(e.target.value);
 });
+
+applySelectedTheme(localStorage.getItem('theme') || 'peach');
 
 function updateTime() {
   const mins = Math.floor(timeLeft / 60);
@@ -94,6 +102,7 @@ function renderTodos() {
 
 function saveTodos() {
   localStorage.setItem('todos', JSON.stringify(todos));
+  refreshMetrics();
 }
 
 addBtn.addEventListener('click', () => {
@@ -118,7 +127,8 @@ const plannerTray = document.getElementById('planner-tray');
 let chapters = JSON.parse(localStorage.getItem('chapters')) || [];
 
 function saveChapters() {
-localStorage.setItem('chapters', JSON.stringify(chapters));
+  localStorage.setItem('chapters', JSON.stringify(chapters));
+  refreshMetrics();
 }
 
 function renderTray() {
